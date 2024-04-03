@@ -22,10 +22,32 @@ def test_Inspector_NegativeBeta():
         inp.Inspector(0.5, -0.1, 1, 100, 1, 0)
     
     assert str(excinfo.value) == "Beta parameter must be between zero and one."
+    
+def test_Inspector_BetaGreaterOne():
+    '''
+    This test checks if a beta greater than 1 given to Inspector(...), the
+    function will raise the ValueError with the correct string explanation.
+    '''
+    
+    with pytest.raises(ValueError) as excinfo:
+        inp.Inspector(0.5, -0.1, 1, 100, 1, 0)
+    
+    assert str(excinfo.value) == "Beta parameter must be between zero and one."    
 
 def test_Inspector_NegativeGamma():
     '''
     This test checks if a negative value of gamma is given to Inspector(...), the
+    function will raise the ValueError with the correct string explanation.
+    '''
+    
+    with pytest.raises(ValueError) as excinfo:
+        inp.Inspector(-0.5, 0.1, 1, 100, 1, 0)
+    
+    assert str(excinfo.value) == "Gamma parameter must be between zero and one."
+
+def test_Inspector_GammaGreaterOne():
+    '''
+    This test checks if a gamma greater than 1 is given to Inspector(...), the
     function will raise the ValueError with the correct string explanation.
     '''
     
