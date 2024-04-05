@@ -1,65 +1,72 @@
 
 class EpidemicSIR:
+    '''
+    EpidemicSIR contains all the information on the epidemic and the functions to system evolve.
+    It takes as input all the parameters setted by the users in the input.py file.
+    '''
     def __init__(self, t, S, I, R, gamma, beta):
+        '''
+        In the constructor we have the assignment of the parameters passed as argument and the
+        creation of three empty lists useful for the plot.
+        '''
         self.t = int(t)  
         self.S = int(S)
         self.I = int(I)  
         self.R = int(R)  
-        self.N = int(S + I + R)  
-        self.gamma = gamma  # healing probability
-        self.beta = beta    # infection probability
+        self.N = int(S + I + R) # total population
+        self.gamma = gamma      # healing probability
+        self.beta = beta        # infection probability
 
         self.S_vector = []
         self.I_vector = []
         self.R_vector = []
 
     def Evolve(self):
-        # Il metodo fa evolvere l'epidemia di un giorno
-        # Applico equazioni differenziali del modello SIR
-        # Poi trasformo i risultati ottenuti in valori interi
+        '''
+        The method evolves the epidemic day by day through the application of the differetnial
+        equation of the SIR model.
+        SIR model works with float values, but the number of susceptible, infected, and
+        recovered individuals must be whole numbers (integers).
+        Therefore, the algorithm incorporates a method to ensure accurate approximation.
+        Values of the parameters are saved by filling the lists created in the constructor.
+        '''
+
         self.S_vector.append(self.S) #day 0
         self.I_vector.append(self.I) #day 0
         self.R_vector.append(self.R) #day 0
-
-        delta_s = 0.0 
-        delta_i = 0.0
-        delta_r = 0.0
-
-        db_s = self.S #qua assegno il valore di S a db
-        db_i = self.I #idem
-        db_r = self.R #idem
-
-        decimal_s = 0.0
-        decimal_i = 0.0
-        decimal_r = 0.0
+        
+        #internal variable for the calculation
+        db_s = self.S
+        db_i = self.I
+        db_r = self.R
 
         for i in range(1, self.t):
-            # Calcolo il cambiamento delle variabili dopo un giorno
+            # Evolution of the epidemic by the differential equation
             delta_s = ((-self.beta) * db_s * db_i) / self.N
             delta_i = ((self.beta * db_s * db_i / self.N) - self.gamma * db_i)
             delta_r = self.gamma * db_i
 
-            # db è il valore vero, poi separo in parte intera e parte decimale e li metto in s e deimals
+            # assignment of the new variables to the internal variable
             db_s += delta_s
             db_i += delta_i
             db_r += delta_r
 
-            # Trasformo i valori ottenuti in parte intera e parte decimale
-            # Assegno parte intera a variabili di S I R originali
+            # the integer part of the internal variables are assigned to the parameters S,I,R
             self.S = int(db_s)
             self.I = int(db_i)
             self.R = int(db_r)
-            # Assegno parte decimale a apposite variabili
+
+            # calculation of the decimal part of the internal variables
             decimal_s = db_s - self.S
             decimal_i = db_i - self.I
             decimal_r = db_r - self.R
-
-            # Il calcolo di S I R non conserva il valore di N
-            # Approssima per difetto i valori nella conversione a int
-            # Distribuisco valori restanti tra S I R in base alla parte decimale
-            A = int(self.S + self.I + self.R)
+            
+            A = int(self.S + self.I + self.R) #values of current N
             
             while A < self.N:
+                #following loop works the approximation in case A is minor than N
+                #A and S or I or R which have the biggest decimal part is incremented by one 
+        
                 if (decimal_s > decimal_i) and (decimal_s > decimal_r) and (self.S>self.S_vector[i-1]):
                     self.S += 1
                     decimal_s = 0
@@ -69,10 +76,8 @@ class EpidemicSIR:
                     decimal_i = 0
 
                 else:
-                    # Se non c'è valore più alto degli altri aumento R
                     self.R += 1
                     decimal_r = 0
-                print(i, self.S, self.I, self.R, self.N)
                 A += 1
 
             self.S_vector.append(self.S)
