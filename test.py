@@ -1,5 +1,6 @@
 import pytest
 import input as inp
+import epidemic_class as epd
 
 def test_Inspector_NegativeTime():
     '''
@@ -99,3 +100,16 @@ def test_Inspector_NegativeR():
         inp.Inspector(0.5, 0.1, 1, 100, 2, -1)
     
     assert str(excinfo.value) == "We can't have neagtive number of subsceptible, infected or recovered people."
+
+def test_Evolve_ConservationOfN():
+    epidemictest=epd.EpidemicSIR(300, 30000, 1, 0, 0.1, 0.3)
+    epidemictest.Evolve()
+    for i in range(300):
+        assert(epidemictest.S_vector[i]+ epidemictest.I_vector[i]+ epidemictest.R_vector[i] == epidemictest.N)
+
+def test_Evolve_DecresentS():
+    epidemictest=epd.EpidemicSIR(300, 30000, 1, 0, 0.1, 0.3)
+    epidemictest.Evolve()
+
+    for i in range(1, 300):
+        assert(epidemictest.S_vector[i] <= epidemictest.S_vector[i-1])
