@@ -102,12 +102,21 @@ def test_Inspector_NegativeR():
     assert str(excinfo.value) == "We can't have neagtive number of subsceptible, infected or recovered people."
 
 def test_Evolve_ConservationOfN():
+    '''
+    This test checks if the value of the total population (N) is conserved during the
+    epidemic evolution.
+    '''
+
     epidemictest=epd.EpidemicSIR(300, 30000, 1, 0, 0.1, 0.3)
     epidemictest.Evolve()
     for i in range(300):
         assert(epidemictest.S_vector[i]+ epidemictest.I_vector[i]+ epidemictest.R_vector[i] == epidemictest.N)
 
 def test_Evolve_DecresentS():
+    '''
+    This test checks if the value of subsceptible population doesn't increase during
+    the epidemic simulation.
+    '''
     epidemictest=epd.EpidemicSIR(300, 30000, 1, 0, 0.1, 0.3)
     epidemictest.Evolve()
 
