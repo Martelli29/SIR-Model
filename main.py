@@ -5,9 +5,8 @@ import plot as dr
 if __name__=="__main__":
     
     gamma, beta= inp.SetPar()
-    t= inp.SetT()
     s,i,r= inp.SetSIR()
-    inp.Inspector(gamma, beta, t, s, i, r)
-    SIR=cl.EpidemicSIR(t, s, i, r, gamma, beta)
+    inp.Inspector(gamma, beta, s, i, r)
+    SIR=cl.EpidemicSIR(s, i, r, gamma, beta)
     SIR.Evolve()
-    dr.plot(t, SIR.S_vector, SIR.I_vector, SIR.R_vector)
+    dr.plot(SIR.S_vector, SIR.I_vector, SIR.R_vector)

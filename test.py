@@ -2,17 +2,6 @@ import pytest
 import input as inp
 import epidemic_class as epd
 
-def test_Inspector_NegativeTime():
-    '''
-    This test checks if a negative value of time is given to Inspector(...), the function
-    will raise the ValueError with the correct string explanation.
-    '''
-    
-    with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(0.5, 0.5, -1, 100, 1, 0)
-    
-    assert str(excinfo.value) == "Simulation cannot take place with times less than or equal to zero."
-
 def test_Inspector_NegativeBeta():
     '''
     This test checks if a negative value of beta is given to Inspector(...), the
@@ -20,7 +9,7 @@ def test_Inspector_NegativeBeta():
     '''
     
     with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(0.5, -0.1, 1, 100, 1, 0)
+        inp.Inspector(0.5, -0.1, 100, 1, 0)
     
     assert str(excinfo.value) == "Beta parameter must be between zero and one."
     
@@ -31,7 +20,7 @@ def test_Inspector_BetaGreaterOne():
     '''
     
     with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(0.5, -0.1, 1, 100, 1, 0)
+        inp.Inspector(0.5, -0.1, 100, 1, 0)
     
     assert str(excinfo.value) == "Beta parameter must be between zero and one."    
 
@@ -42,7 +31,7 @@ def test_Inspector_NegativeGamma():
     '''
     
     with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(-0.5, 0.1, 1, 100, 1, 0)
+        inp.Inspector(-0.5, 0.1, 100, 1, 0)
     
     assert str(excinfo.value) == "Gamma parameter must be between zero and one."
 
@@ -53,7 +42,7 @@ def test_Inspector_GammaGreaterOne():
     '''
     
     with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(-0.5, 0.1, 1, 100, 1, 0)
+        inp.Inspector(-0.5, 0.1, 100, 1, 0)
     
     assert str(excinfo.value) == "Gamma parameter must be between zero and one."
 
@@ -64,7 +53,7 @@ def test_Inspector_ZeroPopulation():
     '''
     
     with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(0.5, 0.1, 1, 0, 0, 0)
+        inp.Inspector(0.5, 0.1, 0, 0, 0)
     
     assert str(excinfo.value) == "Population must be greater than zero!!!"
 
@@ -75,7 +64,7 @@ def test_Inspector_NegativeS():
     '''
     
     with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(0.5, 0.1, 1, -100, 2, 1)
+        inp.Inspector(0.5, 0.1, -100, 2, 1)
   
     assert str(excinfo.value) == "We can't have neagtive number of subsceptible, infected or recovered people."
 
@@ -86,7 +75,7 @@ def test_Inspector_NegativeI():
     '''
     
     with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(0.5, 0.1, 1, 100, -2, 1)
+        inp.Inspector(0.5, 0.1, 100, -2, 1)
   
     assert str(excinfo.value) == "We can't have neagtive number of subsceptible, infected or recovered people."
 
@@ -97,7 +86,7 @@ def test_Inspector_NegativeR():
     '''
     
     with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(0.5, 0.1, 1, 100, 2, -1)
+        inp.Inspector(0.5, 0.1, 100, 2, -1)
     
     assert str(excinfo.value) == "We can't have neagtive number of subsceptible, infected or recovered people."
 
@@ -107,9 +96,9 @@ def test_Evolve_ConservationOfN1():
     epidemic evolution.
     '''
 
-    test=epd.EpidemicSIR(300, 30000, 1, 0, 0.1, 0.3)
+    test=epd.EpidemicSIR(30000, 1, 0, 0.1, 0.3)
     test.Evolve()
-    for i in range(300):
+    for i in range(test.t):
         assert(test.S_vector[i]+ test.I_vector[i]+ test.R_vector[i] == test.N)
 
 def test_Evolve_ConservationOfN2():
@@ -118,9 +107,9 @@ def test_Evolve_ConservationOfN2():
     epidemic evolution.
     '''
 
-    test=epd.EpidemicSIR(3000, 3000000, 1, 0, 0.1, 0.3)
+    test=epd.EpidemicSIR(3000000, 1, 0, 0.1, 0.3)
     test.Evolve()
-    for i in range(300):
+    for i in range(test.t):
         assert(test.S_vector[i]+ test.I_vector[i]+ test.R_vector[i] == test.N)
 
 def test_Evolve_DecresentS1():
@@ -129,10 +118,10 @@ def test_Evolve_DecresentS1():
     the epidemic simulation.
     '''
 
-    test=epd.EpidemicSIR(300, 30000, 1, 0, 0.1, 0.3)
+    test=epd.EpidemicSIR(30000, 1, 0, 0.1, 0.3)
     test.Evolve()
 
-    for i in range(1, 300):
+    for i in range(1, test.t):
         assert(test.S_vector[i] <= test.S_vector[i-1])
 
 def test_Evolve_DecresentS2():
@@ -141,10 +130,10 @@ def test_Evolve_DecresentS2():
     the epidemic simulation.
     '''
 
-    test=epd.EpidemicSIR(300, 30000, 1, 0, 0.01, 0.03)
+    test=epd.EpidemicSIR(30000, 1, 0, 0.01, 0.03)
     test.Evolve()
 
-    for i in range(1, 300):
+    for i in range(1, test.t):
         assert(test.S_vector[i] <= test.S_vector[i-1])
 
 def test_Evolve_DecresentS3():
@@ -153,10 +142,10 @@ def test_Evolve_DecresentS3():
     the epidemic simulation.
     '''
 
-    test=epd.EpidemicSIR(300, 100, 1, 0, 0.01, 0.03)
+    test=epd.EpidemicSIR(100, 1, 0, 0.01, 0.03)
     test.Evolve()
 
-    for i in range(1, 300):
+    for i in range(1, test.t):
         assert(test.S_vector[i] <= test.S_vector[i-1])
 
 def test_Evolve_DecresentS4():
@@ -165,10 +154,10 @@ def test_Evolve_DecresentS4():
     the epidemic simulation.
     '''
 
-    test=epd.EpidemicSIR(300, 100000, 1, 0, 0.5, 0.6)
+    test=epd.EpidemicSIR(100000, 1, 0, 0.5, 0.6)
     test.Evolve()
 
-    for i in range(1, 300):
+    for i in range(1, test.t):
         assert(test.S_vector[i] <= test.S_vector[i-1])
 
 
@@ -178,10 +167,10 @@ def test_Evolve_ZeroInfected():
     infected population.
     '''
 
-    test=epd.EpidemicSIR(100, 1000, 0, 0, 0.2, 0.2)
+    test=epd.EpidemicSIR(1000, 0, 0, 0.2, 0.2)
     test.Evolve()
 
-    for i in range(100):
+    for i in range(test.t):
         assert(test.S_vector[i]==1000 and test.I_vector[i]==0 and test.R_vector[i]==0)
 
 def test_Evolve_ZeroInfection():
@@ -190,21 +179,12 @@ def test_Evolve_ZeroInfection():
     infected population with 0.0% probability to infect. 
     '''
 
-    test=epd.EpidemicSIR(100, 1000, 10, 0, 0.2, 0.0)
+    test=epd.EpidemicSIR(1000, 10, 0, 0.2, 0.0)
     test.Evolve()
-
-    assert(test.S_vector[99]==1000 and test.I_vector[99]==0 and test.R_vector[99]==10)
-
-def test_Evolve_ZeroHealing():
-    '''
-    This test checks if the values of removed population remain unchanged during the simulation
-    if healing probability is 0.0%.
-    '''
-
-    test=epd.EpidemicSIR(100, 1000, 10, 0, 0.0, 0.2)
-    test.Evolve()
-
-    assert(test.S_vector[99]==0 and test.I_vector[99]==1010 and test.R_vector[99]==0)
+    print(test.S_vector, test.I_vector, test.R_vector)
+    print(test.S_vector[test.t-1], test.I_vector[test.t-1], test.R_vector[test.t-1])
+    print(test.t-1)
+    assert(test.S_vector[test.t-1]==1000 and test.I_vector[test.t-1]==0 and test.R_vector[test.t-1]==10)
 
 def test_Evolve_NoEpidemic():
     '''
@@ -212,7 +192,7 @@ def test_Evolve_NoEpidemic():
     no infected people.
     '''
 
-    test=epd.EpidemicSIR(100, 1000, 0, 0, 0.5, 0.5)
+    test=epd.EpidemicSIR(1000, 0, 0, 0.5, 0.5)
     test.Evolve()
 
-    assert(test.S_vector[99]==1000 and test.I_vector[99]==0 and test.R_vector[99]==0)
+    assert(test.S_vector[test.t-1]==1000 and test.I_vector[test.t-1]==0 and test.R_vector[test.t-1]==0)

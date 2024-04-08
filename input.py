@@ -14,20 +14,6 @@ def SetPar():
     
     return gamma, beta
 
-def SetT():
-    '''
-    This function takes in input the duration of the simulation time (days) used
-    for the pandemic evolution.
-    The values of this parameter determines the duration of the simulation.
-    
-    return:
-    -time (int): duration of the simulation.
-    '''
-    
-    time= int(input("Put in the duration of the simulation (days) (must be an integer!!!):\n"))
-    
-    return time
-
 def SetSIR():
     '''
     This function takes in input the parameters of the SIR model used
@@ -45,7 +31,7 @@ def SetSIR():
     
     return s, i, r
 
-def Inspector(gamma, beta, t,s,i,r):
+def Inspector(gamma, beta, s, i, r):
     '''
     This function checks if the parameters given by the user are compatible for the simulation.
     If not, this function interrupt the esecution of the code and raise the error with the 
@@ -59,11 +45,8 @@ def Inspector(gamma, beta, t,s,i,r):
     -I (int): number of infected people.
     -R (int): number of removed people.
     '''
-    
-    if t <= 0:
-        raise ValueError("Simulation cannot take place with times less than or equal to zero.")
-    
-    elif beta < 0 or beta > 1:
+        
+    if beta < 0 or beta > 1:
         raise ValueError("Beta parameter must be between zero and one.")
 
     elif gamma < 0 or gamma > 1:

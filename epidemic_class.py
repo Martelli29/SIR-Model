@@ -4,12 +4,12 @@ class EpidemicSIR:
     EpidemicSIR contains all the information on the epidemic and the functions to system evolve.
     It takes as input all the parameters setted by the users in the input.py file.
     '''
-    def __init__(self, t, S, I, R, gamma, beta):
+    def __init__(self, S, I, R, gamma, beta):
         '''
         In the constructor we have the assignment of the parameters passed as argument and the
         creation of three empty lists useful for the plot.
         '''
-        self.t = int(t)  
+        self.t = 1
         self.S = int(S)
         self.I = int(I)  
         self.R = int(R)  
@@ -40,7 +40,7 @@ class EpidemicSIR:
         db_i = self.I
         db_r = self.R
 
-        for i in range(1, self.t):
+        while self.I != 0:
             # Evolution of the epidemic by the differential equation
             delta_s = ((-self.beta) * db_s * db_i) / self.N
             delta_i = ((self.beta * db_s * db_i / self.N) - self.gamma * db_i)
@@ -67,7 +67,7 @@ class EpidemicSIR:
                 #following loop works the approximation in case A is minor than N
                 #A and S or I or R which have the biggest decimal part is incremented by one 
         
-                if (decimal_s > decimal_i) and (decimal_s > decimal_r) and (self.S>self.S_vector[i-1]):
+                if (decimal_s > decimal_i) and (decimal_s > decimal_r) and (self.S>self.S_vector[self.t-1]):
                     self.S += 1
                     decimal_s = 0
 
@@ -80,6 +80,7 @@ class EpidemicSIR:
                     decimal_r = 0
                 A += 1
 
+            self.t += 1
             self.S_vector.append(self.S)
             self.I_vector.append(self.I)
             self.R_vector.append(self.R)
