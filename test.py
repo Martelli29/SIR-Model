@@ -173,6 +173,28 @@ def test_Evolve_ZeroInfected():
     for i in range(test.t):
         assert(test.S_vector[i]==1000 and test.I_vector[i]==0 and test.R_vector[i]==0)
 
+def test_Evolve_SimulationTime1():
+    '''
+    This test checks if the duration of the simulation is equal to 0 if the number of infected
+    is equal to 0
+    '''
+
+    test=epd.EpidemicSIR(1000, 0, 0, 0.2, 0.2)
+    test.Evolve()
+
+    assert(test.t-1==0)
+
+def test_Evolve_SimulationTime2():
+    '''
+    This test checks if the duration of the simulation is equal to 1 if the heaing probability
+    is equal to 1 and infection probability is equal to 0.
+    '''
+
+    test=epd.EpidemicSIR(1000, 10, 0, 1.0, 0.0)
+    test.Evolve()
+    
+    assert(test.t-1==1)
+
 def test_Evolve_ZeroInfection():
     '''
     This test checks if the values of subsceptible doesn't change if there are some
