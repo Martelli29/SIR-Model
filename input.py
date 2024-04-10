@@ -31,6 +31,26 @@ def SetSIR():
     
     return s, i, r
 
+def SetVaccine():
+    '''
+    This function asks to user if a vaccine can be used in the simulation.
+    This function takes in input a string that is used for the inizialization of a boolean
+    variable that allow to run the script for the use of the vaccine.
+    '''
+
+    str=input("Do you want to use vaccine? (y/n)\n")
+
+    if str == "yes" or str == "y":
+        bol = True
+
+    elif str == "no" or str == "n":
+        bol = False
+
+    else:
+        raise TypeError("Only accepted answers are yes/y/no/n.")
+    
+    return bol
+
 def Inspector(gamma, beta, s, i, r):
     '''
     This function checks if the parameters given by the user are compatible for the simulation.
