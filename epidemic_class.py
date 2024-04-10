@@ -20,11 +20,11 @@ class EpidemicSIR:
         self.S_vector = []
         self.I_vector = []
         self.R_vector = []
-        self.V = False
+        self.trig = True
 
-    def vaccine(self):
-        if self.I > 0.2*self.N or self.V == True:
-            self.V == True
+    def Vaccine(self):
+        if self.I > 0.2*self.N and self.trig == True:
+            self.trig = False
             self.gamma = self.gamma*2
             self.beta = self.beta/2
 
