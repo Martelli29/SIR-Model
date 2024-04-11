@@ -22,13 +22,29 @@ class EpidemicSIR:
         self.R_vector = []
         self.trig = True
 
-    def Vaccine(self):
-        if self.I > 0.2*self.N and self.trig == True:
-            self.trig = False
-            self.gamma = self.gamma*2
-            self.beta = self.beta/2
+    def Vaccine(self, val):
 
-    def Evolve(self, bol):
+        scen = val
+
+        if self.I > 0.1*self.N and self.trig == True and scen == 1:
+            self.trig = False
+            self.beta = self.beta - (0.2*self.beta)
+        
+        elif self.I > 0.1*self.N and self.trig == True and scen == 2:
+            self.trig = False
+            self.beta = self.beta - (0.7*self.beta)
+        
+        elif self.I > 0.1*self.N and self.trig == True and scen == 3:
+            self.trig = False
+            self.beta = self.beta - (0.2*self.beta)
+            self.gamma = self.gamma + (0.5*self.gamma)
+
+        elif self.I > 0.1*self.N and self.trig == True and scen == 4:
+            self.trig = False
+            self.beta = self.beta - (0.6*self.beta)
+            self.gamma = self.gamma + (0.9*self.gamma)
+    
+    def Evolve(self, bol, val):
         '''
         The method evolves the epidemic day by day through the application of the differetnial
         equation of the SIR model.
@@ -52,7 +68,7 @@ class EpidemicSIR:
             if bol == False:
                 pass
             elif bol == True:
-                self.vaccine()
+                self.Vaccine(val)
             
             # Evolution of the epidemic by the differential equation
             delta_s = ((-self.beta) * db_s * db_i) / self.N
