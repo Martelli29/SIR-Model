@@ -38,18 +38,30 @@ def SetVaccine():
     variable that allow to run the script for the use of the vaccine.
     '''
 
-    str=input("Do you want to use vaccine? (y/n)\n")
+    str=input("Do you want to apply some measures to mitigate the epidemic? (y/n)\n")
 
     if str == "yes" or str == "y":
         bol = True
+        print("select one of the following number to use the corresponding action, press:")
+        print("1: light lockdown, 20% reduction in the infection prob (beta).")
+        print("2: heavy lockdown, 70% reduction in the infection prob (gamma).")
+        print("3: weakly effective vaccine, 20% reduction in the infection prob and 50% reduction in the healing prob.")
+        print("4: strongly effective vaccine, 60% reduction in the infection prob and 90% reduction in the healing prob.")
+        scenario=int(input())
+        
+        if scenario == 1 or scenario == 2 or scenario == 3 or scenario == 4: 
+            pass
+        
+        else:
+            raise ValueError("Only accepted values are 1/2/3/4.") 
 
     elif str == "no" or str == "n":
         bol = False
-
+        scenario = 0
     else:
         raise TypeError("Only accepted answers are yes/y/no/n.")
     
-    return bol
+    return bol, scenario
 
 def Inspector(gamma, beta, s, i, r):
     '''
