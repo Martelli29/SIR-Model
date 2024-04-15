@@ -9,6 +9,7 @@ class EpidemicSIR:
         In the constructor we have the assignment of the parameters passed as argument and the
         creation of three empty lists useful for the plot.
         '''
+
         self.t = 1
         self.S = int(S)
         self.I = int(I)  
@@ -20,28 +21,25 @@ class EpidemicSIR:
         self.S_vector = []
         self.I_vector = []
         self.R_vector = []
-        self.trig = True
 
-    def Vaccine(self, scen):
 
-        if self.I > 0.1*self.N and self.trig == True and scen == 1:
-            self.trig = False
+    def Vaccine(self, scenario):
+
+        if scenario == 1:
             self.beta = self.beta - (0.2*self.beta)
         
-        elif self.I > 0.1*self.N and self.trig == True and scen == 2:
-            self.trig = False
+        elif scenario == 2:
             self.beta = self.beta - (0.7*self.beta)
         
-        elif self.I > 0.1*self.N and self.trig == True and scen == 3:
-            self.trig = False
+        elif scenario == 3:
             self.beta = self.beta - (0.2*self.beta)
             self.gamma = self.gamma + (0.5*self.gamma)
 
-        elif self.I > 0.1*self.N and self.trig == True and scen == 4:
-            self.trig = False
+        elif scenario == 4:
             self.beta = self.beta - (0.6*self.beta)
             self.gamma = self.gamma + (0.9*self.gamma)
-    
+
+
     def Evolve(self, bol, scenario):
         '''
         The method evolves the epidemic day by day through the application of the differetnial
@@ -60,12 +58,15 @@ class EpidemicSIR:
         db_s = self.S
         db_i = self.I
         db_r = self.R
+        trig = bol
         
         while self.I != 0:
-    
-            if bol == False:
+            
+            if trig == False:
                 pass
-            elif bol == True:
+
+            elif trig == True and self.I > 0.1*self.N:
+                trig = False
                 self.Vaccine(scenario)
             
             # Evolution of the epidemic by the differential equation
@@ -111,5 +112,3 @@ class EpidemicSIR:
             self.S_vector.append(self.S)
             self.I_vector.append(self.I)
             self.R_vector.append(self.R)
-
-
