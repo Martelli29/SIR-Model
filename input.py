@@ -1,18 +1,34 @@
-
-def SetPar():
+def SetBeta():
     '''
-    This function takes in input the values of the parameters gamma (healing probability)
-    and beta (infection probability) used for the pandemic evolution.
+    This function takes in input the values of the parameter beta
+    (infection probability) used for the pandemic evolution.
     
     return:
-    -gamma (float): healing probability between 0 and 1
-    -beta (float): infection probability between 0 and 1
+    -beta (float): infection probability between 0 and 1.
+    '''
+
+    beta = float(input("Put in the infection probability (beta):\n"))
+
+    if beta < 0 or beta > 1:
+        raise ValueError("Beta parameter must be between zero and one.")
+    
+    return beta
+
+def SetGamma():
+    '''
+    This function takes in input the values of the parameter gamma (healing probability)
+    used for the pandemic evolution.
+    
+    return:
+    -gamma (float): healing probability between 0 and 1.
     '''
 
     gamma = float(input("Put in the healing probability (gamma):\n"))
-    beta = float(input("Put in the infection probability (beta):\n"))
     
-    return gamma, beta
+    if gamma < 0 or gamma > 1:
+        raise ValueError("Gamma parameter must be between zero and one.")
+
+    return gamma
 
 def SetSIR():
     '''
@@ -29,6 +45,12 @@ def SetSIR():
     i = int(input("Put in the numbers of infectious (must be an integer!!!):\n"))
     r = int(input("Put in the numbers of recovered (must be an integer!!!):\n"))
     
+    if s < 0 or i < 0 or r < 0:
+        raise ValueError("We can't have neagtive number of subsceptible, infected or recovered people.")
+    
+    elif s+i+r == 0:
+        raise ValueError("Population must be greater than zero!!!")
+
     return s, i, r
 
 def SetVaccine():
@@ -51,7 +73,6 @@ def SetVaccine():
         
         if scenario == 1 or scenario == 2 or scenario == 3 or scenario == 4: 
             pass
-        
         else:
             raise ValueError("Only accepted values are 1/2/3/4.") 
 
@@ -62,30 +83,3 @@ def SetVaccine():
         raise TypeError("Only accepted answers are yes/y/no/n.")
     
     return bol, scenario
-
-def Inspector(gamma, beta, s, i, r):
-    '''
-    This function checks if the parameters given by the user are compatible for the simulation.
-    If not, this function interrupt the esecution of the code and raise the error with the 
-    corresponding explanation.
-    
-    This function needs six parameters:
-    -gamma (float): healing probability.
-    -beta (float): infection probability. 
-    -t (int): duration of the simulation.
-    -S (int): number of subsceptible people.
-    -I (int): number of infected people.
-    -R (int): number of removed people.
-    '''
-        
-    if beta < 0 or beta > 1:
-        raise ValueError("Beta parameter must be between zero and one.")
-
-    elif gamma < 0 or gamma > 1:
-        raise ValueError("Gamma parameter must be between zero and one.")
-
-    elif s < 0 or i < 0 or r < 0:
-        raise ValueError("We can't have neagtive number of subsceptible, infected or recovered people.")
-    
-    elif s+i+r == 0:
-        raise ValueError("Population must be greater than zero!!!")

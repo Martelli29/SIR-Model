@@ -4,10 +4,10 @@ import plot as dr
 
 if __name__=="__main__":
     
-    gamma, beta= inp.SetPar()
+    gamma=inp.SetGamma()
+    beta=inp.SetBeta()
     s,i,r = inp.SetSIR()
     bol, scenario = inp.SetVaccine()
-    inp.Inspector(gamma, beta, s, i, r)
     SIR=cl.EpidemicSIR(s, i, r, gamma, beta)
     SIR.Vaccine(scenario)
     SIR.Evolve(bol, scenario)

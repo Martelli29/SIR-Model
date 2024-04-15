@@ -1,26 +1,29 @@
 import pytest
 import input as inp
 import epidemic_class as epd
+from unittest.mock import patch
 
 def test_Inspector_NegativeBeta():
     '''
     This test checks if a negative value of beta is given to Inspector(...), the
     function will raise the ValueError with the correct string explanation.
     '''
-    
-    with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(0.5, -0.1, 100, 1, 0)
+
+    with patch('builtins.input', return_value='-2'):
+        with pytest.raises(ValueError) as excinfo:
+            inp.SetBeta()
     
     assert str(excinfo.value) == "Beta parameter must be between zero and one."
-    
+
 def test_Inspector_BetaGreaterOne():
     '''
     This test checks if a beta greater than 1 given to Inspector(...), the
     function will raise the ValueError with the correct string explanation.
     '''
     
-    with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(0.5, -0.1, 100, 1, 0)
+    with patch('builtins.input', return_value='2'):
+        with pytest.raises(ValueError) as excinfo:
+            inp.SetBeta()
     
     assert str(excinfo.value) == "Beta parameter must be between zero and one."    
 
@@ -29,9 +32,10 @@ def test_Inspector_NegativeGamma():
     This test checks if a negative value of gamma is given to Inspector(...), the
     function will raise the ValueError with the correct string explanation.
     '''
-    
-    with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(-0.5, 0.1, 100, 1, 0)
+
+    with patch('builtins.input', return_value=-2):
+        with pytest.raises(ValueError) as excinfo:
+            inp.SetGamma()
     
     assert str(excinfo.value) == "Gamma parameter must be between zero and one."
 
@@ -41,8 +45,9 @@ def test_Inspector_GammaGreaterOne():
     function will raise the ValueError with the correct string explanation.
     '''
     
-    with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(-0.5, 0.1, 100, 1, 0)
+    with patch('builtins.input', return_value='2'):
+        with pytest.raises(ValueError) as excinfo:
+            inp.SetGamma()
     
     assert str(excinfo.value) == "Gamma parameter must be between zero and one."
 
@@ -52,8 +57,9 @@ def test_Inspector_ZeroPopulation():
     function will raise the ValueError with the correct string explanation.
     '''
     
-    with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(0.5, 0.1, 0, 0, 0)
+    with patch('builtins.input', side_effect=['0', '0', '0']):
+        with pytest.raises(ValueError) as excinfo:
+            inp.SetSIR()
     
     assert str(excinfo.value) == "Population must be greater than zero!!!"
 
@@ -63,8 +69,9 @@ def test_Inspector_NegativeS():
     function will raise the ValueError with the correct string explanation.
     '''
     
-    with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(0.5, 0.1, -100, 2, 1)
+    with patch('builtins.input', side_effect=['-10', '1', '0']):
+        with pytest.raises(ValueError) as excinfo:
+            inp.SetSIR()
   
     assert str(excinfo.value) == "We can't have neagtive number of subsceptible, infected or recovered people."
 
@@ -74,8 +81,9 @@ def test_Inspector_NegativeI():
     function will raise the ValueError with the correct string explanation.
     '''
     
-    with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(0.5, 0.1, 100, -2, 1)
+    with patch('builtins.input', side_effect=['10', '-10', '0']):
+        with pytest.raises(ValueError) as excinfo:
+            inp.SetSIR()
   
     assert str(excinfo.value) == "We can't have neagtive number of subsceptible, infected or recovered people."
 
@@ -85,8 +93,9 @@ def test_Inspector_NegativeR():
     function will raise the ValueError with the correct string explanation.
     '''
     
-    with pytest.raises(ValueError) as excinfo:
-        inp.Inspector(0.5, 0.1, 100, 2, -1)
+    with patch('builtins.input', side_effect=['10', '1', '-10']):
+        with pytest.raises(ValueError) as excinfo:
+            inp.SetSIR()
     
     assert str(excinfo.value) == "We can't have neagtive number of subsceptible, infected or recovered people."
 
@@ -97,7 +106,7 @@ def test_Evolve_ConservationOfN1():
     '''
 
     test=epd.EpidemicSIR(30000, 1, 0, 0.1, 0.3)
-    test.Evolve()
+    test.Evolve(False, 0)
     for i in range(test.t):
         assert(test.S_vector[i]+ test.I_vector[i]+ test.R_vector[i] == test.N)
 
@@ -108,7 +117,7 @@ def test_Evolve_ConservationOfN2():
     '''
 
     test=epd.EpidemicSIR(3000000, 1, 0, 0.1, 0.3)
-    test.Evolve()
+    test.Evolve(False, 0)
     for i in range(test.t):
         assert(test.S_vector[i]+ test.I_vector[i]+ test.R_vector[i] == test.N)
 
@@ -119,7 +128,7 @@ def test_Evolve_DecresentS1():
     '''
 
     test=epd.EpidemicSIR(30000, 1, 0, 0.1, 0.3)
-    test.Evolve()
+    test.Evolve(False, 0)
 
     for i in range(1, test.t):
         assert(test.S_vector[i] <= test.S_vector[i-1])
@@ -131,7 +140,7 @@ def test_Evolve_DecresentS2():
     '''
 
     test=epd.EpidemicSIR(30000, 1, 0, 0.01, 0.03)
-    test.Evolve()
+    test.Evolve(False, 0)
 
     for i in range(1, test.t):
         assert(test.S_vector[i] <= test.S_vector[i-1])
@@ -143,7 +152,7 @@ def test_Evolve_DecresentS3():
     '''
 
     test=epd.EpidemicSIR(100, 1, 0, 0.01, 0.03)
-    test.Evolve()
+    test.Evolve(False, 0)
 
     for i in range(1, test.t):
         assert(test.S_vector[i] <= test.S_vector[i-1])
@@ -155,7 +164,7 @@ def test_Evolve_DecresentS4():
     '''
 
     test=epd.EpidemicSIR(100000, 1, 0, 0.5, 0.6)
-    test.Evolve()
+    test.Evolve(False, 0)
 
     for i in range(1, test.t):
         assert(test.S_vector[i] <= test.S_vector[i-1])
@@ -168,7 +177,7 @@ def test_Evolve_ZeroInfected():
     '''
 
     test=epd.EpidemicSIR(1000, 0, 0, 0.2, 0.2)
-    test.Evolve()
+    test.Evolve(False, 0)
 
     for i in range(test.t):
         assert(test.S_vector[i]==1000 and test.I_vector[i]==0 and test.R_vector[i]==0)
@@ -180,7 +189,7 @@ def test_Evolve_SimulationTime1():
     '''
 
     test=epd.EpidemicSIR(1000, 0, 0, 0.2, 0.2)
-    test.Evolve()
+    test.Evolve(False, 0)
 
     assert(test.t-1==0)
 
@@ -191,7 +200,7 @@ def test_Evolve_SimulationTime2():
     '''
 
     test=epd.EpidemicSIR(1000, 10, 0, 1.0, 0.0)
-    test.Evolve()
+    test.Evolve(False, 0)
     
     assert(test.t-1==1)
 
@@ -202,7 +211,7 @@ def test_Evolve_ZeroInfection():
     '''
 
     test=epd.EpidemicSIR(1000, 10, 0, 0.2, 0.0)
-    test.Evolve()
+    test.Evolve(False, 0)
     print(test.S_vector, test.I_vector, test.R_vector)
     print(test.S_vector[test.t-1], test.I_vector[test.t-1], test.R_vector[test.t-1])
     print(test.t-1)
@@ -215,6 +224,6 @@ def test_Evolve_NoEpidemic():
     '''
 
     test=epd.EpidemicSIR(1000, 0, 0, 0.5, 0.5)
-    test.Evolve()
+    test.Evolve(False, 0)
 
     assert(test.S_vector[test.t-1]==1000 and test.I_vector[test.t-1]==0 and test.R_vector[test.t-1]==0)
