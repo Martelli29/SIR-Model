@@ -25,7 +25,7 @@ def SetGamma():
 
     gamma = float(input("Put in the healing probability (gamma):\n"))
     
-    if gamma < 0 or gamma > 1:
+    if gamma <= 0 or gamma > 1:
         raise ValueError("Gamma parameter must be between zero and one.")
 
     return gamma
