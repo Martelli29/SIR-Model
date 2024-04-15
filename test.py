@@ -3,10 +3,11 @@ import input as inp
 import epidemic_class as epd
 from unittest.mock import patch
 
+
 def test_Inspector_NegativeBeta():
     '''
     This test checks if a negative value of beta is given to Inspector(...), the
-    function will raise the ValueError with the correct string explanation.
+    function will show the proper ValueError with the correct string explanation.
     '''
 
     with patch('builtins.input', return_value='-2'):
@@ -15,10 +16,11 @@ def test_Inspector_NegativeBeta():
     
     assert str(excinfo.value) == "Beta parameter must be between zero and one."
 
+
 def test_Inspector_BetaGreaterOne():
     '''
     This test checks if a beta greater than 1 given to Inspector(...), the
-    function will raise the ValueError with the correct string explanation.
+    function will show the proper ValueError with the correct string explanation.
     '''
     
     with patch('builtins.input', return_value='2'):
@@ -27,10 +29,11 @@ def test_Inspector_BetaGreaterOne():
     
     assert str(excinfo.value) == "Beta parameter must be between zero and one."    
 
+
 def test_Inspector_NegativeGamma():
     '''
     This test checks if a negative value of gamma is given to Inspector(...), the
-    function will raise the ValueError with the correct string explanation.
+    function will show the proper ValueError with the correct string explanation.
     '''
 
     with patch('builtins.input', return_value=-2):
@@ -39,10 +42,11 @@ def test_Inspector_NegativeGamma():
     
     assert str(excinfo.value) == "Gamma parameter must be between zero and one."
 
+
 def test_Inspector_GammaGreaterOne():
     '''
     This test checks if a gamma greater than 1 is given to Inspector(...), the
-    function will raise the ValueError with the correct string explanation.
+    function will show the proper ValueError with the correct string explanation.
     '''
     
     with patch('builtins.input', return_value='2'):
@@ -51,10 +55,11 @@ def test_Inspector_GammaGreaterOne():
     
     assert str(excinfo.value) == "Gamma parameter must be between zero and one."
 
+
 def test_Inspector_ZeroPopulation():
     '''
     This test checks if an empty size of the population is given to Inspector(...), the
-    function will raise the ValueError with the correct string explanation.
+    function will show the proper ValueError with the correct string explanation.
     '''
     
     with patch('builtins.input', side_effect=['0', '0', '0']):
@@ -63,10 +68,11 @@ def test_Inspector_ZeroPopulation():
     
     assert str(excinfo.value) == "Population must be greater than zero!!!"
 
+
 def test_Inspector_NegativeS():
     '''
     This test checks if a negative value of subsceptible (S) is given to Inspector(...), the
-    function will raise the ValueError with the correct string explanation.
+    function will show the proper ValueError with the correct string explanation.
     '''
     
     with patch('builtins.input', side_effect=['-10', '1', '0']):
@@ -75,10 +81,11 @@ def test_Inspector_NegativeS():
   
     assert str(excinfo.value) == "We can't have neagtive number of subsceptible, infected or recovered people."
 
+
 def test_Inspector_NegativeI():
     '''
     This test checks if a negative value of infected (I) is given to Inspector(...), the
-    function will raise the ValueError with the correct string explanation.
+    function will show the proper ValueError with the correct string explanation.
     '''
     
     with patch('builtins.input', side_effect=['10', '-10', '0']):
@@ -87,10 +94,11 @@ def test_Inspector_NegativeI():
   
     assert str(excinfo.value) == "We can't have neagtive number of subsceptible, infected or recovered people."
 
+
 def test_Inspector_NegativeR():
     '''
     This test checks if a negative value of recovered (R) is given to Inspector(...), the
-    function will raise the ValueError with the correct string explanation.
+    function will show the proper ValueError with the correct string explanation.
     '''
     
     with patch('builtins.input', side_effect=['10', '1', '-10']):
@@ -99,7 +107,92 @@ def test_Inspector_NegativeR():
     
     assert str(excinfo.value) == "We can't have neagtive number of subsceptible, infected or recovered people."
 
-def test_Evolve_ConservationOfN1():
+
+def test_VaccineTriggerOff():
+    '''
+    This test checks if the user does not want to use vaccine/isolation scenarios,
+    boolean value that represent the activation of the restriction measures is setted
+    to False and tha variable scenario doesn't have a value.
+    '''
+    with patch('builtins.input', side_effect=['no']):
+        bol,scenario=inp.SetVaccine()
+
+    assert(bol == False and scenario == None)
+
+def test_VaccineTriggerOn():
+    '''
+    This test checks if the vaccine option is triggered on if the user put
+    the proper functionality in the shell.
+    '''
+    
+    with patch('builtins.input', side_effect=['yes','1']):
+        bol,scenario=inp.SetVaccine()
+
+    assert(bol == True)
+
+
+def test_Vaccine_Scenario1():
+    '''
+    This test checks if the correct scenario (in this case scenario 1) 
+    is setted if the user put the proper functionality in the shell.
+    '''
+
+    with patch('builtins.input', side_effect=['yes','1']):
+        bol,scenario=inp.SetVaccine()
+
+    assert(scenario == 1)
+
+
+def test_Vaccine_Scenario2():
+    '''
+    This test checks if the correct scenario (in this case scenario 2) 
+    is setted if the user put the proper functionality in the shell.
+    '''
+
+    with patch('builtins.input', side_effect=['yes','2']):
+        bol,scenario=inp.SetVaccine()
+
+    assert(scenario == 2)
+
+
+def test_Vaccine_Scenario3():   
+    '''
+    This test checks if the correct scenario (in this case scenario 3) 
+    is setted if the user put the proper functionality in the shell.
+    '''
+
+    with patch('builtins.input', side_effect=['yes','3']):
+        bol,scenario=inp.SetVaccine()
+
+    assert(scenario == 3)
+
+
+def test_Vaccine_Scenario4():
+    '''
+    This test checks if the correct scenario (in this case scenario 4) 
+    is setted if the user put the proper functionality in the shell.
+    '''
+        
+    with patch('builtins.input', side_effect=['yes','4']):
+        bol,scenario=inp.SetVaccine()
+
+    assert(scenario == 4)
+
+
+def test_Vaccine_ValueError():
+    '''
+    This test checks if a wrong input value (different than 1/2/3/4) is given to the 
+    function SetVaccine(), the function will show the proper ValueError
+    with the correct string explanation.
+    '''
+    with patch('builtins.input', side_effect=['yes','5']):
+        with pytest.raises(ValueError) as excinfo:
+            bol,scenario=inp.SetVaccine()
+    
+    assert str(excinfo.value) == "Only accepted values are 1/2/3/4."
+
+
+def test_Evolve_ConservationOfN_1():
     '''
     This test checks if the value of the total population (N) is conserved during the
     epidemic evolution.
@@ -110,7 +203,7 @@ def test_Evolve_ConservationOfN1():
     for i in range(test.t):
         assert(test.S_vector[i]+ test.I_vector[i]+ test.R_vector[i] == test.N)
 
-def test_Evolve_ConservationOfN2():
+def test_Evolve_ConservationOfN_2():
     '''
     This test checks if the value of the total population (N) is conserved during the
     epidemic evolution.
@@ -121,7 +214,8 @@ def test_Evolve_ConservationOfN2():
     for i in range(test.t):
         assert(test.S_vector[i]+ test.I_vector[i]+ test.R_vector[i] == test.N)
 
-def test_Evolve_DecresentS1():
+
+def test_Evolve_DecresentS_1():
     '''
     This test checks if the value of subsceptible population doesn't increase during
     the epidemic simulation.
@@ -133,7 +227,8 @@ def test_Evolve_DecresentS1():
     for i in range(1, test.t):
         assert(test.S_vector[i] <= test.S_vector[i-1])
 
-def test_Evolve_DecresentS2():
+
+def test_Evolve_DecresentS_2():
     '''
     This test checks if the value of subsceptible population doesn't increase during
     the epidemic simulation.
@@ -145,7 +240,8 @@ def test_Evolve_DecresentS2():
     for i in range(1, test.t):
         assert(test.S_vector[i] <= test.S_vector[i-1])
 
-def test_Evolve_DecresentS3():
+
+def test_Evolve_DecresentS_3():
     '''
     This test checks if the value of subsceptible population doesn't increase during
     the epidemic simulation.
@@ -157,7 +253,8 @@ def test_Evolve_DecresentS3():
     for i in range(1, test.t):
         assert(test.S_vector[i] <= test.S_vector[i-1])
 
-def test_Evolve_DecresentS4():
+
+def test_Evolve_DecresentS_4():
     '''
     This test checks if the value of subsceptible population doesn't increase during
     the epidemic simulation.
@@ -182,6 +279,7 @@ def test_Evolve_ZeroInfected():
     for i in range(test.t):
         assert(test.S_vector[i]==1000 and test.I_vector[i]==0 and test.R_vector[i]==0)
 
+
 def test_Evolve_SimulationTime1():
     '''
     This test checks if the duration of the simulation is equal to 0 if the number of infected
@@ -193,6 +291,7 @@ def test_Evolve_SimulationTime1():
 
     assert(test.t-1==0)
 
+
 def test_Evolve_SimulationTime2():
     '''
     This test checks if the duration of the simulation is equal to 1 if the heaing probability
@@ -203,6 +302,7 @@ def test_Evolve_SimulationTime2():
     test.Evolve(False, 0)
     
     assert(test.t-1==1)
+
 
 def test_Evolve_ZeroInfection():
     '''
@@ -217,6 +317,7 @@ def test_Evolve_ZeroInfection():
     print(test.t-1)
     assert(test.S_vector[test.t-1]==1000 and test.I_vector[test.t-1]==0 and test.R_vector[test.t-1]==10)
 
+
 def test_Evolve_NoEpidemic():
     '''
     This test checks if the values of subsceptible population remain unchanged if we have
@@ -227,3 +328,69 @@ def test_Evolve_NoEpidemic():
     test.Evolve(False, 0)
 
     assert(test.S_vector[test.t-1]==1000 and test.I_vector[test.t-1]==0 and test.R_vector[test.t-1]==0)
+
+
+def test_Evolve_NoVaccineNecessary():
+    '''
+    This test checks the no activation of vaccine if the infected population never reach
+    a value equal to 10% of total population.
+    '''
+
+    test=epd.EpidemicSIR(10000, 10, 0, 0.05, 0.0)
+    test.Evolve(True, 4)
+
+    test.gamma = round(test.gamma, 5)
+    test.beta = round(test.beta, 5)
+
+    assert(test.gamma == 0.05 and test.beta == 0.0)
+
+
+def test_Evolve_Scenario1():
+    '''
+    This test checks if beta parameter (infection probability) is reduced by 20% due
+    to the activation of scenario 1.
+    '''
+
+    test=epd.EpidemicSIR(10000, 1, 0, 0.01, 0.5)
+    test.Evolve(True, 1)
+
+    assert(test.beta==0.4)
+
+
+def test_Evolve_Scenario2():
+    '''
+    This test checks if beta parameter (infection probability) is reduced by 70% due
+    to the activation of scenario 2.
+    '''
+
+    test=epd.EpidemicSIR(10000, 1, 0, 0.01, 0.9)
+    test.Evolve(True, 2)
+
+    assert(test.beta==0.27)
+
+
+def test_Evolve_Scenario3():
+    '''
+    This test checks if beta parameter (infection probability) is reduced by 20% and gamma
+    parameter (healing probability) is increased by 50% due to the activation of scenario 3.
+    '''
+
+    test=epd.EpidemicSIR(10000, 1, 0, 0.1, 0.5)
+    test.Evolve(True, 3)
+    test.gamma = round(test.gamma, 5)
+
+    assert(test.gamma == 0.15 and test.beta == 0.4)
+
+
+def test_Evolve_Scenario4():
+    '''
+    This test checks if beta parameter (infection probability) is reduced by 60% and gamma
+    parameter (healing probability) is increased by 90% due to the activation of scenario 4.
+    '''
+
+    test=epd.EpidemicSIR(10000, 1, 0, 0.1, 0.5)
+    test.Evolve(True, 4)
+    test.gamma = round(test.gamma, 5)
+    test.beta = round(test.beta, 5)
+    
+    assert(test.gamma == 0.19 and test.beta == 0.2)
