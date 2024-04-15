@@ -78,7 +78,7 @@ def SetVaccine():
 
     elif str == "no" or str == "n":
         bol = False
-        scenario = 0
+        scenario = None
     else:
         raise TypeError("Only accepted answers are yes/y/no/n.")
     
