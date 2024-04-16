@@ -10,8 +10,11 @@ def plot(S, I, R, t):
     plt.plot(I, color="red")
     plt.plot(R, color="black")
 
-    plt.axvline(t, color='gray', linestyle='dashed', linewidth=1)
-
+    if t != None:
+        plt.axvline(t, color='gray', linestyle='dashed', linewidth=1)
+    else:
+        pass
+    
     plt.xlabel("Days")
     plt.ylabel("Population")
     
