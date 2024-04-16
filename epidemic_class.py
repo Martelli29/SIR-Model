@@ -21,7 +21,7 @@ class EpidemicSIR:
         self.S_vector = []
         self.I_vector = []
         self.R_vector = []
-        self.triggerday = None 
+        self.triggerday = None
 
     def Vaccine(self, scenario):
 
@@ -58,15 +58,15 @@ class EpidemicSIR:
         db_s = self.S
         db_i = self.I
         db_r = self.R
-        trig = bol
+        self.trig = bol
         
         while self.I != 0:
             
-            if trig == False:
+            if self.trig == False:
                 pass
 
-            elif trig == True and self.I > 0.1*self.N:
-                trig = False
+            elif self.trig == True and self.I > 0.1*self.N:
+                self.trig = False
                 self.triggerday = self.t-1
                 self.Vaccine(scenario)
             
@@ -113,3 +113,17 @@ class EpidemicSIR:
             self.S_vector.append(self.S)
             self.I_vector.append(self.I)
             self.R_vector.append(self.R)
+    
+    
+    def PrintResults(self):
+        print("-----------------------")
+        print("Dimension of the population:", self.N)
+        if self.triggerday != None:
+            print("Vaccine/isolation day:", self.triggerday)
+        elif self.trig == True and self.triggerday == None:
+            print("No Vaccine/isolation measures needed.")
+        else:
+            pass
+        print("Percentage of infected population:", (self.R/self.N)*100, "%")
+        print("Duration of the epidemic:",  self.t)
+        print("-----------------------")

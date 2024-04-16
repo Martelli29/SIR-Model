@@ -11,5 +11,6 @@ if __name__=="__main__":
     SIR=cl.EpidemicSIR(s, i, r, gamma, beta)
     SIR.Vaccine(scenario)
     SIR.Evolve(bol, scenario)
-    
+    SIR.PrintResults()
+
     dr.plot(SIR.S_vector, SIR.I_vector, SIR.R_vector, SIR.triggerday)
