@@ -12,4 +12,4 @@ if __name__=="__main__":
     SIR.Vaccine(scenario)
     SIR.Evolve(bol, scenario)
     
-    dr.plot(SIR.S_vector, SIR.I_vector, SIR.R_vector)
+    dr.plot(SIR.S_vector, SIR.I_vector, SIR.R_vector, SIR.triggerday)

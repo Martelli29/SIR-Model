@@ -21,7 +21,7 @@ class EpidemicSIR:
         self.S_vector = []
         self.I_vector = []
         self.R_vector = []
-
+        self.triggerday = None 
 
     def Vaccine(self, scenario):
 
@@ -67,6 +67,7 @@ class EpidemicSIR:
 
             elif trig == True and self.I > 0.1*self.N:
                 trig = False
+                self.triggerday = self.t-1
                 self.Vaccine(scenario)
             
             # Evolution of the epidemic by the differential equation
