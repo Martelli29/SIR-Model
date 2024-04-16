@@ -394,3 +394,27 @@ def test_Evolve_Scenario4():
     test.beta = round(test.beta, 5)
     
     assert(test.gamma == 0.19 and test.beta == 0.2)
+
+
+def test_NoVaccineDay():
+    '''
+    This test checks the non activation of the vaccine/isolation day even if user has
+    enabled the proper option but 10% of infected people is never reached.
+    '''
+
+    test=epd.EpidemicSIR(10000, 10, 0, 0.1, 0.1)
+    test.Evolve(True, 4)
+
+    assert(test.triggerday == None)
+
+
+def test_VaccineDay():
+    '''
+    This test checks the activation of the vaccine/isolation day if user has
+    enabled the proper option and 10% of people is infected.
+    '''
+        
+    test=epd.EpidemicSIR(10000, 500, 0, 0.1, 1.0)
+    test.Evolve(True, 4)
+
+    assert(test.triggerday == 2)
