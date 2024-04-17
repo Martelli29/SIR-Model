@@ -8,8 +8,8 @@ if __name__=="__main__":
     beta=inp.SetBeta()
     s,i,r = inp.SetSIR()
     bol, scenario = inp.SetVaccine()
+    
     SIR=cl.EpidemicSIR(s, i, r, gamma, beta)
-    SIR.Vaccine(scenario)
     SIR.Evolve(bol, scenario)
     SIR.PrintResults()
 
