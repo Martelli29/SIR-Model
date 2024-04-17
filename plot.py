@@ -17,8 +17,9 @@ def plot(S, I, R, t):
     
     plt.xlabel("Days")
     plt.ylabel("Population")
+    plt.grid(True)
     
     plt.title("SIR model")
-    plt.legend(["Subsceptible", "Infected", "Revomed"])
+    plt.legend(["Subsceptible", "Infected", "Removed"])
     
     plt.show()
