@@ -7,7 +7,7 @@
 - recovered (healed or dead): individuals who have been infected and have either recovered from the disease or died. It is assumed that they can no longer contract the infection.
 
 The transition between the compartments is descbribed through the parameters $\gamma$ and $\beta$.
-$\gamma \in ]0,1]$ represent the healing probability and $\beta \in [0,\infty]$ represent the infection probability, these parameters govern the rates at which individuals transition between the compartments, influencing the dynamics of the epidemic.
+$\gamma \in ]0,1]$ represent the healing probability and $\beta \in [0,1]$ represent the infection probability, these parameters govern the rates at which individuals transition between the compartments, influencing the dynamics of the epidemic.
 The program allows users to explore various scenarios involving vaccine and isolation measures, observing how these interventions impact the epidemic parameters. The simulation culminates in a visual representation of the trends in susceptible, infected, and recovered individuals, along with a numerical summary of the epidemic parameters.
 
 $$
@@ -79,7 +79,71 @@ The repository contains the following python files:
 ## More on the algorithm
 
 The SIR Model, as previously mentioned, utilizes three [differential equations](https://github.com/Martelli29/SIR-Model) to track the trends within three population groups: susceptible, infected, and recovered.
+
 However, a key challenge arises when implementing this model in code. Differential equations operate with floating-point numbers, whereas real-world populations consist of discrete individuals (whole numbers).
 To address this discrepancy, the algorithm employs a specific strategy after each iteration (representing a day) in the simulation. The differential equations provide updates for each population compartment (Susceptible, Infected, Recovered). Here, the algorithm separates the integer and decimal parts of these updates (e.g., 10.6 becomes 10 and 0.6). It then calculates the sum of the updated compartments (S, I, and R) and verifies if this sum matches the initial total population. If it does, the simulation proceeds to the next iteration. However, a discrepancy can exists, the algorithm further analyzes the decimal components. It identifies the compartment with the largest decimal value and increments the integer value of that compartment by 1. This cycle repeats until the total population remains consistent.
 
 This core algorithm is implemented within the Evolve(...) method of the epidemic_class.py file.
+
+## Some examples
+
+Let's how to show some results of the program:
+
+In first example we will see the output with $\gamma$=0.05 and $\beta$=0.3:
+
+```shell
+-----------------------
+Dimension of the population: 1000000
+Percentage of infected population: 98.2378 %
+Duration of the epidemic: 410
+-----------------------
+```
+
+![In this case we have a complete epidemic diffusion without the usage of vaccine/isolation measures.](/Images/SimpleNoVaccineCase.png)
+
+In this case we have a complete epidemic diffusion without the usage of vaccine/isolation measures.
+
+Now, we will see the usage of a light isolation measures with the same parameters:
+
+```shell
+-----------------------
+Dimension of the population: 1000000
+Vaccine/isolation day: 53
+Percentage of infected population: 78.2412 %
+Duration of the epidemic: 533
+-----------------------
+```
+
+![In this case we have the activation of the heavy isolation measures, the vertical line represent the day in which the measures have been activated.](/Images/IsolationCase.png)
+
+In this case we have the activation of the heavy isolation measures, the vertical line represent the day in which the measures have been activated.
+
+Now we want to use the very effective option and how this disturb an aggressive epidemic with $\gamma$=0.03 and $\beta$=0.5:
+
+```shell
+-----------------------
+Dimension of the population: 1000000
+Percentage of infected population: 100.0 %
+Duration of the epidemic: 514
+-----------------------
+```
+
+![No vaccine scenario.](/Images/HeavyScenarioNoVaccine.png)
+
+No vaccine scenario.
+
+```shell
+-----------------------
+Dimension of the population: 1000000
+Vaccine/isolation day: 31
+Percentage of infected population: 97.3699 %
+Duration of the epidemic: 323
+-----------------------
+```
+
+![Scenario with vaccine usage.](/Images/HeavyScenarioWithVaccine.png)
+
+Scenario with vaccine usage.
+
+How we can see, both scenarios involve the entire population throughout the epidemic. However, the presence of a vaccine introduces a key difference. Vaccination leads to a broader peak in the number of infected individuals. This wider peak distributes the infected cases over a longer time period.
+In contrast, the absence of vaccination results in a much narrower peak. In real-world situations, such a narrow peak can overwhelm healthcare systems, posing significant challenges for managing the epidemic.
