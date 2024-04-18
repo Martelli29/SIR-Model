@@ -8,7 +8,8 @@
 
 The transition between the compartments is descbribed through the parameters $\gamma$ and $\beta$.
 $\gamma \in ]0,1]$ represent the healing probability and $\beta \in [0,1]$ represent the infection probability, these parameters govern the rates at which individuals transition between the compartments, influencing the dynamics of the epidemic.
-The program allows users to explore various scenarios involving vaccine and isolation measures, observing how these interventions impact the epidemic parameters. The simulation culminates in a visual representation of the trends in susceptible, infected, and recovered individuals, along with a numerical summary of the epidemic parameters.
+The program allows users to explore various scenarios involving vaccine and isolation measures, observing how these interventions impact the epidemic parameters, this measures will be activated only if 10% of population is infected on a current day.
+The simulation culminates in a visual representation of the trends in susceptible, infected, and recovered individuals, along with a numerical summary of the epidemic parameters.
 
 $$
 \frac{dS}{dt} = -\beta \frac{S}{N} I

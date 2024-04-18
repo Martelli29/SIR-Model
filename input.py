@@ -69,6 +69,7 @@ def SetVaccine():
         print("2: heavy lockdown, 70% reduction in the infection prob (gamma).")
         print("3: weakly effective vaccine, 20% reduction in the infection prob and 50% reduction in the healing prob.")
         print("4: strongly effective vaccine, 60% reduction in the infection prob and 90% reduction in the healing prob.")
+        print("Mitigation measures will be activated only if 10% of population is infected on a current day.")
         scenario=int(input())
         
         if scenario == 1 or scenario == 2 or scenario == 3 or scenario == 4: 
