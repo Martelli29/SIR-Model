@@ -2,9 +2,9 @@
 
 [SIR models](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology) are mathematical tools that divide a population into three compartments:
 
-- susceptible: compratment of healthy individuals that can contract the infection by the interaction with an infected individual and transit to the infected compartment.
+- susceptible: compartment of healthy individuals that can contract the infection by the interaction with an infected individual and transit to the infected compartment.
 - infected: individuals who have been infected and are capable of infecting susceptible individuals.
-- recovered (healed or dead): individuals who have been infected and have either recovered from the disease or died. It is assumed that they can no longer contract the infection.
+- recovered: individuals who have been infected and have either recovered from the disease or died. It is assumed that they can no longer contract the infection.
 
 The transition between the compartments is descbribed through the parameters $\gamma$ and $\beta$.
 $\gamma \in ]0,1]$ represent the healing probability and $\beta \in [0,1]$ represent the infection probability, these parameters govern the rates at which individuals transition between the compartments, influencing the dynamics of the epidemic.
@@ -22,12 +22,13 @@ $$
 \frac{dR}{dt} = \gamma I
 $$
 
-## list of contents
+## List of contents
 
 1. [Install and run the code](https://github.com/Martelli29/SIR-Model#Install-and-run-the-code)
 2. [Input parameters](https://github.com/Martelli29/SIR-Model#Input-parameters)
 3. [Repository structure](https://github.com/Martelli29/SIR-Model#Repository-structure)
 4. [More on the algorithm](https://github.com/Martelli29/SIR-Model#More-on-the-algorithm)
+5. [Some examples](https://github.com/Martelli29/SIR-Model#Some-examples)
 
 ## Install and run the code
 
@@ -69,9 +70,9 @@ Upon program execution, you'll be prompted to enter several parameters in the fo
 
 The repository contains the following python files:
 
-- epidemic_class.py:This file defines a class that encapsulates all the parameters and methods necessary to simulate the epidemic's evolution.
+- epidemic_class.py: This file defines a class that encapsulates all the parameters and methods necessary to simulate the epidemic's evolution.
 - input.py: This file handles the user interaction, prompting for initial parameters and passing them to the epidemic_class.py module.
-- main.py: runs the evolution and and generating the graphical representation of the results.
+- main.py: runs the evolution and generating the graphical representation of the results.
 - plot.py: This file contains the code responsible for creating the visual representation (plot) of the epidemic using the Matplotlib library.
 - requirements.txt: This text file lists the external Python libraries required for the program to function. ([mentioned before](https://github.com/Martelli29/SIR-Model#Install-and-run-the-code))
 - test.py: This file utilizes the pytest library to implement automated unit tests for the program's functionality.
@@ -116,9 +117,9 @@ Duration of the epidemic: 533
 
 ![In this case we have the activation of the heavy isolation measures, the vertical line represent the day in which the measures have been activated.](/Images/IsolationCase.png)
 
-In this case we have the activation of the heavy isolation measures, the vertical line represent the day in which the measures have been activated.
+In this case we have the activation of the heavy isolation measures (scenario 2), the vertical line represent the day in which the measures have been activated.
 
-Now we want to use the very effective option and how this disturb an aggressive epidemic with $\gamma$=0.03 and $\beta$=0.5:
+Now we want to use the very effective vaccine option (scenario 4) and see how this disturb an aggressive epidemic with $\gamma$=0.03 and $\beta$=0.5:
 
 ```shell
 -----------------------
