@@ -4,6 +4,7 @@ class EpidemicSIR:
     EpidemicSIR contains all the information on the epidemic and the functions to system evolve.
     It takes as input all the parameters setted by the users in the input.py file.
     '''
+    
     def __init__(self, S, I, R, gamma, beta):
         '''
         In the constructor we have the assignment of the parameters passed as argument and the
@@ -24,6 +25,9 @@ class EpidemicSIR:
         self.triggerday = None
 
     def Vaccine(self, scenario):
+        '''
+        This method set the new possible values of beta and gamma once a scenario has been selected. 
+        '''
 
         if scenario == 1:
             self.beta = self.beta - (0.2*self.beta)
@@ -116,6 +120,10 @@ class EpidemicSIR:
     
     
     def PrintResults(self):
+        '''
+        This function logs the main parameters of the simulation to the terminal.
+        '''
+
         print("-----------------------")
         print("Dimension of the population:", self.N)
         if self.triggerday != None:
