@@ -13,8 +13,8 @@ class EpidemicSIR:
 
         self.t = 1
         self.S = int(S)
-        self.I = int(I)  
-        self.R = int(R)  
+        self.I = int(I)
+        self.R = int(R)
         self.N = int(S + I + R) # total population
         self.gamma = gamma      # healing probability
         self.beta = beta        # infection probability
@@ -59,6 +59,18 @@ class EpidemicSIR:
             self.beta = self.beta - (0.6*self.beta)
             self.gamma = self.gamma + (0.9*self.gamma)
 
+    def DifferentialEq(self, S, I, R):
+        # Evolution of the epidemic by the differential equation
+        deltaS = ((-self.beta) * S * I) / self.N
+        deltaI = ((self.beta * S * I / self.N) - self.gamma * I)
+        deltaR = self.gamma * I
+
+        S += deltaS
+        I += deltaI
+        R += deltaR
+
+        return S, I, R
+
     def Evolve(self, VaccineTrigger, scenario):
         '''
         The method evolves the epidemic day by day through the application of the differetnial
@@ -74,34 +86,26 @@ class EpidemicSIR:
         self.R_vector.append(self.R) #day 0
 
         #internal variable for the calculation
-        db_s = self.S
-        db_i = self.I
-        db_r = self.R
+        float_S = self.S
+        float_I = self.I
+        float_R = self.R
         self.trig = VaccineTrigger
-        
+
         while self.I != 0:
 
             self.Vaccine(scenario)
-
-            # Evolution of the epidemic by the differential equation
-            delta_s = ((-self.beta) * db_s * db_i) / self.N
-            delta_i = ((self.beta * db_s * db_i / self.N) - self.gamma * db_i)
-            delta_r = self.gamma * db_i
-
-            # assignment of the new variables to the internal variable
-            db_s += delta_s
-            db_i += delta_i
-            db_r += delta_r
-
+            
+            float_S, float_I, float_R = self.DifferentialEq(float_S, float_I, float_R)
+            
             # the integer part of the internal variables are assigned to the parameters S,I,R
-            self.S = int(db_s)
-            self.I = int(db_i)
-            self.R = int(db_r)
+            self.S = int(float_S)
+            self.I = int(float_I)
+            self.R = int(float_R)
 
             # calculation of the decimal part of the internal variables
-            decimal_s = db_s - self.S
-            decimal_i = db_i - self.I
-            decimal_r = db_r - self.R
+            decimal_s = float_S - self.S
+            decimal_i = float_I - self.I
+            decimal_r = float_R - self.R
 
             A = int(self.S + self.I + self.R) #current values of N
 
