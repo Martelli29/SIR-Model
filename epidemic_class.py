@@ -44,7 +44,7 @@ class EpidemicSIR:
             self.gamma = self.gamma + (0.9*self.gamma)
 
 
-    def Evolve(self, bol, scenario):
+    def Evolve(self, VaccineTrigger, scenario):
         '''
         The method evolves the epidemic day by day through the application of the differetnial
         equation of the SIR model.
@@ -62,7 +62,7 @@ class EpidemicSIR:
         db_s = self.S
         db_i = self.I
         db_r = self.R
-        self.trig = bol
+        self.trig = VaccineTrigger
         
         while self.I != 0:
             

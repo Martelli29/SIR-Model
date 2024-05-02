@@ -60,10 +60,10 @@ def SetVaccine():
     variable that allow to run the script for the use of the vaccine.
     '''
 
-    str=input("Do you want to apply some measures to mitigate the epidemic? (y/n)\n")
+    UserInp=input("Do you want to apply some measures to mitigate the epidemic? (y/n)\n")
 
-    if str == "yes" or str == "y":
-        bol = True
+    if UserInp == "yes" or UserInp == "y":
+        VaccineTrigger = True
         print("select one of the following number to use the corresponding action, press:")
         print("1: light lockdown, 20% reduction in the infection prob (beta).")
         print("2: heavy lockdown, 70% reduction in the infection prob (gamma).")
@@ -77,10 +77,10 @@ def SetVaccine():
         else:
             raise ValueError("Only accepted values are 1/2/3/4.") 
 
-    elif str == "no" or str == "n":
-        bol = False
+    elif UserInp == "no" or UserInp == "n":
+        VaccineTrigger = False
         scenario = None
     else:
         raise TypeError("Only accepted answers are yes/y/no/n.")
     
-    return bol, scenario
+    return VaccineTrigger, scenario

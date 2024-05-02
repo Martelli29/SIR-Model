@@ -115,9 +115,9 @@ def test_VaccineTriggerOff():
     to False and tha variable scenario doesn't have a value.
     '''
     with patch('builtins.input', side_effect=['no']):
-        bol,scenario=inp.SetVaccine()
+        VaccineTrigger,scenario=inp.SetVaccine()
 
-    assert(bol == False and scenario == None)
+    assert(VaccineTrigger == False and scenario == None)
 
 def test_VaccineTriggerOn():
     '''
@@ -126,9 +126,9 @@ def test_VaccineTriggerOn():
     '''
     
     with patch('builtins.input', side_effect=['yes','1']):
-        bol,scenario=inp.SetVaccine()
+        VaccineTrigger,scenario=inp.SetVaccine()
 
-    assert(bol == True)
+    assert(VaccineTrigger == True)
 
 
 def test_Vaccine_Scenario1():
@@ -138,7 +138,7 @@ def test_Vaccine_Scenario1():
     '''
 
     with patch('builtins.input', side_effect=['yes','1']):
-        bol,scenario=inp.SetVaccine()
+        VaccineTrigger,scenario=inp.SetVaccine()
 
     assert(scenario == 1)
 
@@ -150,7 +150,7 @@ def test_Vaccine_Scenario2():
     '''
 
     with patch('builtins.input', side_effect=['yes','2']):
-        bol,scenario=inp.SetVaccine()
+        VaccineTrigger,scenario=inp.SetVaccine()
 
     assert(scenario == 2)
 
@@ -162,7 +162,7 @@ def test_Vaccine_Scenario3():
     '''
 
     with patch('builtins.input', side_effect=['yes','3']):
-        bol,scenario=inp.SetVaccine()
+        VaccineTrigger,scenario=inp.SetVaccine()
 
     assert(scenario == 3)
 
@@ -174,7 +174,7 @@ def test_Vaccine_Scenario4():
     '''
         
     with patch('builtins.input', side_effect=['yes','4']):
-        bol,scenario=inp.SetVaccine()
+        VaccineTrigger,scenario=inp.SetVaccine()
 
     assert(scenario == 4)
 
@@ -187,7 +187,7 @@ def test_Vaccine_ValueError():
     '''
     with patch('builtins.input', side_effect=['yes','5']):
         with pytest.raises(ValueError) as excinfo:
-            bol,scenario=inp.SetVaccine()
+            VaccineTrigger,scenario=inp.SetVaccine()
     
     assert str(excinfo.value) == "Only accepted values are 1/2/3/4."
 
