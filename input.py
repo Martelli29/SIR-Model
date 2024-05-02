@@ -75,26 +75,21 @@ def SetVaccine():
     if UserInp in ("no measures", "light lockdown", "heavy lockdown", "weakly effective vaccine", "strongly effective vaccine"):
         
         if UserInp == "no measures":
-            VaccineTrigger = False
             scenario = "no measures"
 
         elif UserInp == "light lockdown":
-            VaccineTrigger = True
             scenario = "light lockdown"
 
         elif UserInp == "heavy lockdown":
-            VaccineTrigger = True
             scenario = "heavy lockdown"
 
         elif UserInp == "weakly effective vaccine":
-            VaccineTrigger = True
             scenario = "weakly effective vaccine"
         
         elif UserInp == "strongly effective vaccine":
-            VaccineTrigger = True
             scenario = "strongly effective vaccine" 
         
     else:
         raise TypeError("Only accepted answers are no measures/light lockdown/heavy lockdown/weakly effective vaccine/UserInpongly effective vaccine.")
     
-    return VaccineTrigger, scenario
+    return scenario

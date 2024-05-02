@@ -7,10 +7,10 @@ if __name__=="__main__":
     gamma=inp.SetGamma()
     beta=inp.SetBeta()
     s,i,r = inp.SetSIR()
-    VaccineTrigger, scenario = inp.SetVaccine()
+    scenario = inp.SetVaccine()
     
     SIR=cl.EpidemicSIR(s, i, r, gamma, beta)
-    SIR.Evolve(VaccineTrigger, scenario)
-    SIR.PrintResults()
+    SIR.Evolve(scenario)
+    SIR.PrintResults(scenario)
 
     dr.plot(SIR.S_vector, SIR.I_vector, SIR.R_vector, SIR.triggerday)

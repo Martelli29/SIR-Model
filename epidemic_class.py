@@ -11,7 +11,7 @@ class EpidemicSIR:
         creation of three empty lists useful for the plot.
         '''
 
-        self.t = 1
+        self.t = 1              #try to remove in the future
         self.S = int(S)
         self.I = int(I)
         self.R = int(R)
@@ -24,40 +24,44 @@ class EpidemicSIR:
         self.R_vector = []
         self.triggerday = None
 
-    def Vaccine(self, scenario):
+
+    def Vaccine(self, scenario, vax_request):
         '''
         This method set the new possible values of beta and gamma once a scenario has been selected. 
         '''
-
-        if self.trig == False and scenario == "no measures":
-            pass
-
-        elif self.trig == True and self.I > 0.1*self.N and scenario == "light lockdown":
-            self.trig = False
-            self.triggerday = self.t-1
-
-            self.beta = self.beta - (0.2*self.beta)
-
-
-        elif self.trig == True and self.I > 0.1*self.N and scenario == "heavy lockdown":
-            self.trig = False
-            self.triggerday = self.t-1
-
-            self.beta = self.beta - (0.7*self.beta)
         
-        elif self.trig == True and self.I > 0.1*self.N and scenario == "weakly effective vaccine":
-            self.trig = False
-            self.triggerday = self.t-1
+        if vax_request == None:
+        
+            if scenario == "no measures":
+                vax_request = False
+            
+            elif self.I > 0.1*self.N and scenario == "light lockdown":
+                vax_request = True
+                self.triggerday = self.t-1
+                self.beta = self.beta - (0.2*self.beta)
 
-            self.beta = self.beta - (0.2*self.beta)
-            self.gamma = self.gamma + (0.5*self.gamma)
+            elif self.I > 0.1*self.N and scenario == "heavy lockdown":
+                vax_request = True
+                self.triggerday = self.t-1
 
-        elif self.trig == True and self.I > 0.1*self.N and scenario == "strongly effective vaccine":
-            self.trig = False
-            self.triggerday = self.t-1
+                self.beta = self.beta - (0.7*self.beta)
+            
+            elif self.I > 0.1*self.N and scenario == "weakly effective vaccine":
+                vax_request = True
+                self.triggerday = self.t-1
 
-            self.beta = self.beta - (0.6*self.beta)
-            self.gamma = self.gamma + (0.9*self.gamma)
+                self.beta = self.beta - (0.2*self.beta)
+                self.gamma = self.gamma + (0.5*self.gamma)
+
+            elif self.I > 0.1*self.N and scenario == "strongly effective vaccine":
+                vax_request = True
+                self.triggerday = self.t-1
+
+                self.beta = self.beta - (0.6*self.beta)
+                self.gamma = self.gamma + (0.9*self.gamma)
+
+        return vax_request
+
 
     def DifferentialEq(self, S, I, R):
         # Evolution of the epidemic by the differential equation
@@ -71,7 +75,8 @@ class EpidemicSIR:
 
         return S, I, R
 
-    def Evolve(self, VaccineTrigger, scenario):
+
+    def Evolve(self, scenario):
         '''
         The method evolves the epidemic day by day through the application of the differetnial
         equation of the SIR model.
@@ -89,11 +94,12 @@ class EpidemicSIR:
         float_S = self.S
         float_I = self.I
         float_R = self.R
-        self.trig = VaccineTrigger
+        
+        vax_request = None
 
         while self.I != 0:
-
-            self.Vaccine(scenario)
+            
+            vax_request = self.Vaccine(scenario, vax_request)
             
             float_S, float_I, float_R = self.DifferentialEq(float_S, float_I, float_R)
             
@@ -132,19 +138,18 @@ class EpidemicSIR:
             self.R_vector.append(self.R)
 
 
-    def PrintResults(self):
+    def PrintResults(self, scenario):
         '''
         This function logs the main parameters of the simulation to the terminal.
         '''
 
         print("-----------------------")
         print("Dimension of the population:", self.N)
+        print("Selected scenario:", scenario)
         if self.triggerday != None:
             print("Vaccine/isolation day:", self.triggerday)
-        elif self.trig == True and self.triggerday == None:
+        elif scenario != "no measures" and self.triggerday == None:
             print("No Vaccine/isolation measures needed.")
-        else:
-            pass
         print("Percentage of infected population:", (self.R/self.N)*100, "%")
         print("Duration of the epidemic:",  self.t)
         print("-----------------------")
