@@ -29,20 +29,35 @@ class EpidemicSIR:
         This method set the new possible values of beta and gamma once a scenario has been selected. 
         '''
 
-        if scenario == "light lockdown":
+        if self.trig == False and scenario == "no measures":
+            pass
+
+        elif self.trig == True and self.I > 0.1*self.N and scenario == "light lockdown":
+            self.trig = False
+            self.triggerday = self.t-1
+
             self.beta = self.beta - (0.2*self.beta)
-        
-        elif scenario == "heavy lockdown":
+
+
+        elif self.trig == True and self.I > 0.1*self.N and scenario == "heavy lockdown":
+            self.trig = False
+            self.triggerday = self.t-1
+
             self.beta = self.beta - (0.7*self.beta)
         
-        elif scenario == "weakly effective vaccine":
+        elif self.trig == True and self.I > 0.1*self.N and scenario == "weakly effective vaccine":
+            self.trig = False
+            self.triggerday = self.t-1
+
             self.beta = self.beta - (0.2*self.beta)
             self.gamma = self.gamma + (0.5*self.gamma)
 
-        elif scenario == "strongly effective vaccine":
+        elif self.trig == True and self.I > 0.1*self.N and scenario == "strongly effective vaccine":
+            self.trig = False
+            self.triggerday = self.t-1
+
             self.beta = self.beta - (0.6*self.beta)
             self.gamma = self.gamma + (0.9*self.gamma)
-
 
     def Evolve(self, VaccineTrigger, scenario):
         '''
@@ -57,7 +72,7 @@ class EpidemicSIR:
         self.S_vector.append(self.S) #day 0
         self.I_vector.append(self.I) #day 0
         self.R_vector.append(self.R) #day 0
-        
+
         #internal variable for the calculation
         db_s = self.S
         db_i = self.I
@@ -65,15 +80,9 @@ class EpidemicSIR:
         self.trig = VaccineTrigger
         
         while self.I != 0:
-            
-            if self.trig == False:
-                pass
 
-            elif self.trig == True and self.I > 0.1*self.N:
-                self.trig = False
-                self.triggerday = self.t-1
-                self.Vaccine(scenario)
-            
+            self.Vaccine(scenario)
+
             # Evolution of the epidemic by the differential equation
             delta_s = ((-self.beta) * db_s * db_i) / self.N
             delta_i = ((self.beta * db_s * db_i / self.N) - self.gamma * db_i)
@@ -93,13 +102,13 @@ class EpidemicSIR:
             decimal_s = db_s - self.S
             decimal_i = db_i - self.I
             decimal_r = db_r - self.R
-            
+
             A = int(self.S + self.I + self.R) #current values of N
-            
+
             while A < self.N:
                 #following loop works the approximation in case A is minor than N
                 #A and S or I or R which have the biggest decimal part is incremented by one 
-        
+
                 if (decimal_s > decimal_i) and (decimal_s > decimal_r) and (self.S>self.S_vector[self.t-1]):
                     self.S += 1
                     decimal_s = 0
@@ -117,8 +126,8 @@ class EpidemicSIR:
             self.S_vector.append(self.S)
             self.I_vector.append(self.I)
             self.R_vector.append(self.R)
-    
-    
+
+
     def PrintResults(self):
         '''
         This function logs the main parameters of the simulation to the terminal.
