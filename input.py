@@ -60,27 +60,41 @@ def SetVaccine():
     variable that allow to run the script for the use of the vaccine.
     '''
 
-    UserInp=input("Do you want to apply some measures to mitigate the epidemic? (y/n)\n")
+    print()
+    print("Digit one of the following scenario to activate the corresponding action:")
+    print("no measures: No measures will be used.")
+    print("light lockdown: 20% reduction in the infection prob (beta).")
+    print("heavy lockdown: 70% reduction in the infection prob (gamma).")
+    print("weakly effective vaccine: 20% reduction in the infection prob and 50% reduction in the healing prob.")
+    print("strongly effective vaccine: 60% reduction in the infection prob and 90% reduction in the healing prob.")
+    print()
+    print("Mitigation measures will be activated only if 10% of population is infected on a current day.")
 
-    if UserInp == "yes" or UserInp == "y":
-        VaccineTrigger = True
-        print("select one of the following number to use the corresponding action, press:")
-        print("1: light lockdown, 20% reduction in the infection prob (beta).")
-        print("2: heavy lockdown, 70% reduction in the infection prob (gamma).")
-        print("3: weakly effective vaccine, 20% reduction in the infection prob and 50% reduction in the healing prob.")
-        print("4: strongly effective vaccine, 60% reduction in the infection prob and 90% reduction in the healing prob.")
-        print("Mitigation measures will be activated only if 10% of population is infected on a current day.")
-        scenario=int(input())
+    UserInp=input().lower()
+
+    if UserInp in ("no measures", "light lockdown", "heavy lockdown", "weakly effective vaccine", "strongly effective vaccine"):
         
-        if scenario == 1 or scenario == 2 or scenario == 3 or scenario == 4: 
-            pass
-        else:
-            raise ValueError("Only accepted values are 1/2/3/4.") 
+        if UserInp == "no measures":
+            VaccineTrigger = False
+            scenario = "no measures"
 
-    elif UserInp == "no" or UserInp == "n":
-        VaccineTrigger = False
-        scenario = None
+        elif UserInp == "light lockdown":
+            VaccineTrigger = True
+            scenario = "light lockdown"
+
+        elif UserInp == "heavy lockdown":
+            VaccineTrigger = True
+            scenario = "heavy lockdown"
+
+        elif UserInp == "weakly effective vaccine":
+            VaccineTrigger = True
+            scenario = "weakly effective vaccine"
+        
+        elif UserInp == "strongly effective vaccine":
+            VaccineTrigger = True
+            scenario = "strongly effective vaccine" 
+        
     else:
-        raise TypeError("Only accepted answers are yes/y/no/n.")
+        raise TypeError("Only accepted answers are no measures/light lockdown/heavy lockdown/weakly effective vaccine/UserInpongly effective vaccine.")
     
     return VaccineTrigger, scenario

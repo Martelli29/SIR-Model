@@ -29,17 +29,17 @@ class EpidemicSIR:
         This method set the new possible values of beta and gamma once a scenario has been selected. 
         '''
 
-        if scenario == 1:
+        if scenario == "light lockdown":
             self.beta = self.beta - (0.2*self.beta)
         
-        elif scenario == 2:
+        elif scenario == "heavy lockdown":
             self.beta = self.beta - (0.7*self.beta)
         
-        elif scenario == 3:
+        elif scenario == "weakly effective vaccine":
             self.beta = self.beta - (0.2*self.beta)
             self.gamma = self.gamma + (0.5*self.gamma)
 
-        elif scenario == 4:
+        elif scenario == "strongly effective vaccine":
             self.beta = self.beta - (0.6*self.beta)
             self.gamma = self.gamma + (0.9*self.gamma)
 

@@ -114,10 +114,10 @@ def test_VaccineTriggerOff():
     boolean value that represent the activation of the restriction measures is setted
     to False and tha variable scenario doesn't have a value.
     '''
-    with patch('builtins.input', side_effect=['no']):
+    with patch('builtins.input', side_effect=['no measures']):
         VaccineTrigger,scenario=inp.SetVaccine()
 
-    assert(VaccineTrigger == False and scenario == None)
+    assert(VaccineTrigger == False and scenario == "no measures")
 
 def test_VaccineTriggerOn():
     '''
@@ -125,7 +125,7 @@ def test_VaccineTriggerOn():
     the proper functionality in the shell.
     '''
     
-    with patch('builtins.input', side_effect=['yes','1']):
+    with patch('builtins.input', side_effect=['light lockdown']):
         VaccineTrigger,scenario=inp.SetVaccine()
 
     assert(VaccineTrigger == True)
@@ -137,11 +137,10 @@ def test_Vaccine_Scenario1():
     is setted if the user put the proper functionality in the shell.
     '''
 
-    with patch('builtins.input', side_effect=['yes','1']):
+    with patch('builtins.input', side_effect=['light lockdown']):
         VaccineTrigger,scenario=inp.SetVaccine()
 
-    assert(scenario == 1)
-
+    assert(scenario == "light lockdown")
 
 def test_Vaccine_Scenario2():
     '''
@@ -149,10 +148,10 @@ def test_Vaccine_Scenario2():
     is setted if the user put the proper functionality in the shell.
     '''
 
-    with patch('builtins.input', side_effect=['yes','2']):
+    with patch('builtins.input', side_effect=['heavy lockdown']):
         VaccineTrigger,scenario=inp.SetVaccine()
 
-    assert(scenario == 2)
+    assert(scenario == "heavy lockdown")
 
 
 def test_Vaccine_Scenario3():   
@@ -161,10 +160,10 @@ def test_Vaccine_Scenario3():
     is setted if the user put the proper functionality in the shell.
     '''
 
-    with patch('builtins.input', side_effect=['yes','3']):
+    with patch('builtins.input', side_effect=['weakly effective vaccine']):
         VaccineTrigger,scenario=inp.SetVaccine()
 
-    assert(scenario == 3)
+    assert(scenario == "weakly effective vaccine")
 
 
 def test_Vaccine_Scenario4():
@@ -173,23 +172,10 @@ def test_Vaccine_Scenario4():
     is setted if the user put the proper functionality in the shell.
     '''
         
-    with patch('builtins.input', side_effect=['yes','4']):
+    with patch('builtins.input', side_effect=['strongly effective vaccine']):
         VaccineTrigger,scenario=inp.SetVaccine()
 
-    assert(scenario == 4)
-
-
-def test_Vaccine_ValueError():
-    '''
-    This test checks if a wrong input value (different than 1/2/3/4) is given to the 
-    function SetVaccine(), the function will show the proper ValueError
-    with the correct string explanation.
-    '''
-    with patch('builtins.input', side_effect=['yes','5']):
-        with pytest.raises(ValueError) as excinfo:
-            VaccineTrigger,scenario=inp.SetVaccine()
-    
-    assert str(excinfo.value) == "Only accepted values are 1/2/3/4."
+    assert(scenario == "strongly effective vaccine")
 
 
 def test_Evolve_ConservationOfN_1():
@@ -312,9 +298,7 @@ def test_Evolve_ZeroInfection():
 
     test=epd.EpidemicSIR(1000, 10, 0, 0.2, 0.0)
     test.Evolve(False, 0)
-    print(test.S_vector, test.I_vector, test.R_vector)
-    print(test.S_vector[test.t-1], test.I_vector[test.t-1], test.R_vector[test.t-1])
-    print(test.t-1)
+
     assert(test.S_vector[test.t-1]==1000 and test.I_vector[test.t-1]==0 and test.R_vector[test.t-1]==10)
 
 
@@ -352,7 +336,7 @@ def test_Evolve_Scenario1():
     '''
 
     test=epd.EpidemicSIR(10000, 1, 0, 0.01, 0.5)
-    test.Evolve(True, 1)
+    test.Evolve(True, "light lockdown")
 
     assert(test.beta==0.4)
 
@@ -364,7 +348,7 @@ def test_Evolve_Scenario2():
     '''
 
     test=epd.EpidemicSIR(10000, 1, 0, 0.01, 0.9)
-    test.Evolve(True, 2)
+    test.Evolve(True, "heavy lockdown")
 
     assert(test.beta==0.27)
 
@@ -376,7 +360,7 @@ def test_Evolve_Scenario3():
     '''
 
     test=epd.EpidemicSIR(10000, 1, 0, 0.1, 0.5)
-    test.Evolve(True, 3)
+    test.Evolve(True, "weakly effective vaccine")
     test.gamma = round(test.gamma, 5)
 
     assert(test.gamma == 0.15 and test.beta == 0.4)
@@ -389,7 +373,7 @@ def test_Evolve_Scenario4():
     '''
 
     test=epd.EpidemicSIR(10000, 1, 0, 0.1, 0.5)
-    test.Evolve(True, 4)
+    test.Evolve(True, "strongly effective vaccine")
     test.gamma = round(test.gamma, 5)
     test.beta = round(test.beta, 5)
     
