@@ -70,26 +70,11 @@ def SetVaccine():
     print()
     print("Mitigation measures will be activated only if 10% of population is infected on a current day.")
 
-    UserInp=input().lower()
+    scenario=input().lower()
 
-    if UserInp in ("no measures", "light lockdown", "heavy lockdown", "weakly effective vaccine", "strongly effective vaccine"):
-        
-        if UserInp == "no measures":
-            scenario = "no measures"
-
-        elif UserInp == "light lockdown":
-            scenario = "light lockdown"
-
-        elif UserInp == "heavy lockdown":
-            scenario = "heavy lockdown"
-
-        elif UserInp == "weakly effective vaccine":
-            scenario = "weakly effective vaccine"
-        
-        elif UserInp == "strongly effective vaccine":
-            scenario = "strongly effective vaccine" 
-        
+    if scenario == "no measures" or "light lockdown" or "heavy lockdown" or "weakly effective vaccine" or "strongly effective vaccine":
+        pass
     else:
-        raise TypeError("Only accepted answers are no measures/light lockdown/heavy lockdown/weakly effective vaccine/UserInpongly effective vaccine.")
+        raise TypeError("Only accepted answers are no measures/light lockdown/heavy lockdown/weakly effective vaccine/strongly effective vaccine.")
     
     return scenario
