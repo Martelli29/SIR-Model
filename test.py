@@ -399,6 +399,6 @@ def test_VaccineDay():
     '''
         
     test=epd.EpidemicSIR(10000, 500, 0, 0.1, 1.0)
-    test.Evolve(True, 4)
+    test.Evolve(True, "strongly effective vaccine")
 
     assert(test.triggerday == 2)
