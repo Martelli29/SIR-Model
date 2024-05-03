@@ -11,7 +11,7 @@ class EpidemicSIR:
         creation of three empty lists useful for the plot.
         '''
 
-        self.t = 1              #try to remove in the future
+        self.t = 1
         self.S = int(S)
         self.I = int(I)
         self.R = int(R)
@@ -76,6 +76,38 @@ class EpidemicSIR:
         return S, I, R
 
 
+    def Approximation(self, float_S, float_I, float_R):
+        # the integer part of the internal variables are assigned to the parameters S,I,R
+        self.S = int(float_S)
+        self.I = int(float_I)
+        self.R = int(float_R)
+
+        # calculation of the decimal part of the internal variables
+        decimal_s = float_S - self.S
+        decimal_i = float_I - self.I
+        decimal_r = float_R - self.R
+
+        current_n = int(self.S + self.I + self.R) #current values of N
+
+        while current_n < self.N:
+            #following loop works the approximation in case current_n is minor than N
+            #current_n and S or I or R which have the biggest decimal part is incremented by one 
+
+            if (decimal_s > decimal_i) and (decimal_s > decimal_r) and (self.S > self.S_vector[-1]):
+                self.S += 1
+                decimal_s = 0
+
+            elif (decimal_i > decimal_s) and (decimal_i > decimal_r):
+                self.I += 1
+                decimal_i = 0
+
+            else:
+                self.R += 1
+                decimal_r = 0
+
+            current_n += 1
+
+
     def Evolve(self, scenario):
         '''
         The method evolves the epidemic day by day through the application of the differetnial
@@ -94,43 +126,15 @@ class EpidemicSIR:
         float_S = self.S
         float_I = self.I
         float_R = self.R
-        
         vax_request = None
 
         while self.I != 0:
             
             vax_request = self.Vaccine(scenario, vax_request)
-            
+
             float_S, float_I, float_R = self.DifferentialEq(float_S, float_I, float_R)
             
-            # the integer part of the internal variables are assigned to the parameters S,I,R
-            self.S = int(float_S)
-            self.I = int(float_I)
-            self.R = int(float_R)
-
-            # calculation of the decimal part of the internal variables
-            decimal_s = float_S - self.S
-            decimal_i = float_I - self.I
-            decimal_r = float_R - self.R
-
-            A = int(self.S + self.I + self.R) #current values of N
-
-            while A < self.N:
-                #following loop works the approximation in case A is minor than N
-                #A and S or I or R which have the biggest decimal part is incremented by one 
-
-                if (decimal_s > decimal_i) and (decimal_s > decimal_r) and (self.S>self.S_vector[self.t-1]):
-                    self.S += 1
-                    decimal_s = 0
-
-                elif (decimal_i > decimal_s) and (decimal_i > decimal_r):
-                    self.I += 1
-                    decimal_i = 0
-
-                else:
-                    self.R += 1
-                    decimal_r = 0
-                A += 1
+            self.Approximation(float_S, float_I, float_R)
 
             self.t += 1
             self.S_vector.append(self.S)
