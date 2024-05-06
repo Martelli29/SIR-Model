@@ -176,7 +176,7 @@ def test_Evolve_ConservationOfN_1():
 
     test=epd.EpidemicSIR(30000, 1, 0, 0.1, 0.3)
     test.Evolve("no measures")
-    for i in range(test.t):
+    for i in range(test.day):
         assert(test.S_vector[i]+ test.I_vector[i]+ test.R_vector[i] == test.N)
 
 def test_Evolve_ConservationOfN_2():
@@ -187,7 +187,7 @@ def test_Evolve_ConservationOfN_2():
 
     test=epd.EpidemicSIR(3000000, 1, 0, 0.1, 0.3)
     test.Evolve("no measures")
-    for i in range(test.t):
+    for i in range(test.day):
         assert(test.S_vector[i]+ test.I_vector[i]+ test.R_vector[i] == test.N)
 
 
@@ -200,7 +200,7 @@ def test_Evolve_DecresentS_1():
     test=epd.EpidemicSIR(30000, 1, 0, 0.1, 0.3)
     test.Evolve("no measures")
 
-    for i in range(1, test.t):
+    for i in range(1, test.day):
         assert(test.S_vector[i] <= test.S_vector[i-1])
 
 
@@ -213,7 +213,7 @@ def test_Evolve_DecresentS_2():
     test=epd.EpidemicSIR(30000, 1, 0, 0.01, 0.03)
     test.Evolve("no measures")
 
-    for i in range(1, test.t):
+    for i in range(1, test.day):
         assert(test.S_vector[i] <= test.S_vector[i-1])
 
 
@@ -226,7 +226,7 @@ def test_Evolve_DecresentS_3():
     test=epd.EpidemicSIR(100, 1, 0, 0.01, 0.03)
     test.Evolve("no measures")
 
-    for i in range(1, test.t):
+    for i in range(1, test.day):
         assert(test.S_vector[i] <= test.S_vector[i-1])
 
 
@@ -239,7 +239,7 @@ def test_Evolve_DecresentS_4():
     test=epd.EpidemicSIR(100000, 1, 0, 0.5, 0.6)
     test.Evolve("no measures")
 
-    for i in range(1, test.t):
+    for i in range(1, test.day):
         assert(test.S_vector[i] <= test.S_vector[i-1])
 
 
@@ -252,7 +252,7 @@ def test_Evolve_ZeroInfected():
     test=epd.EpidemicSIR(1000, 0, 0, 0.2, 0.2)
     test.Evolve("no measures")
 
-    for i in range(test.t):
+    for i in range(test.day):
         assert(test.S_vector[i]==1000 and test.I_vector[i]==0 and test.R_vector[i]==0)
 
 
@@ -265,7 +265,7 @@ def test_Evolve_SimulationTime1():
     test=epd.EpidemicSIR(1000, 0, 0, 0.2, 0.2)
     test.Evolve("no measures")
 
-    assert(test.t-1==0)
+    assert(test.day-1==0)
 
 
 def test_Evolve_SimulationTime2():
@@ -277,7 +277,7 @@ def test_Evolve_SimulationTime2():
     test=epd.EpidemicSIR(1000, 10, 0, 1.0, 0.0)
     test.Evolve("no measures")
     
-    assert(test.t-1==1)
+    assert(test.day-1==1)
 
 
 def test_Evolve_ZeroInfection():
@@ -289,7 +289,7 @@ def test_Evolve_ZeroInfection():
     test=epd.EpidemicSIR(1000, 10, 0, 0.2, 0.0)
     test.Evolve("no measures")
 
-    assert(test.S_vector[test.t-1]==1000 and test.I_vector[test.t-1]==0 and test.R_vector[test.t-1]==10)
+    assert(test.S_vector[test.day-1]==1000 and test.I_vector[test.day-1]==0 and test.R_vector[test.day-1]==10)
 
 
 def test_Evolve_NoEpidemic():
@@ -301,7 +301,7 @@ def test_Evolve_NoEpidemic():
     test=epd.EpidemicSIR(1000, 0, 0, 0.5, 0.5)
     test.Evolve("strongly effective vaccine")
 
-    assert(test.S_vector[test.t-1]==1000 and test.I_vector[test.t-1]==0 and test.R_vector[test.t-1]==0)
+    assert(test.S_vector[test.day-1]==1000 and test.I_vector[test.day-1]==0 and test.R_vector[test.day-1]==0)
 
 
 def test_Evolve_NoVaccineNecessary():

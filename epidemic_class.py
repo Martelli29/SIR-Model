@@ -11,13 +11,13 @@ class EpidemicSIR:
         creation of three empty lists useful for the plot.
         '''
 
-        self.t = 1
         self.S = int(S)
         self.I = int(I)
         self.R = int(R)
         self.N = int(S + I + R) # total population
         self.gamma = gamma      # healing probability
         self.beta = beta        # infection probability
+        self.day = 1
 
         self.S_vector = []
         self.I_vector = []
@@ -37,25 +37,25 @@ class EpidemicSIR:
             
             elif int_i > 0.1*self.N and scenario == "light lockdown":
                 vax_request = True
-                self.triggerday = self.t
+                self.triggerday = self.day
                 self.beta = self.beta - (0.2*self.beta)
 
             elif int_i > 0.1*self.N and scenario == "heavy lockdown":
                 vax_request = True
-                self.triggerday = self.t
+                self.triggerday = self.day
 
                 self.beta = self.beta - (0.7*self.beta)
             
             elif int_i > 0.1*self.N and scenario == "weakly effective vaccine":
                 vax_request = True
-                self.triggerday = self.t
+                self.triggerday = self.day
 
                 self.beta = self.beta - (0.2*self.beta)
                 self.gamma = self.gamma + (0.5*self.gamma)
 
             elif int_i > 0.1*self.N and scenario == "strongly effective vaccine":
                 vax_request = True
-                self.triggerday = self.t
+                self.triggerday = self.day
 
                 self.beta = self.beta - (0.6*self.beta)
                 self.gamma = self.gamma + (0.9*self.gamma)
@@ -106,7 +106,7 @@ class EpidemicSIR:
                 decimal_r = 0
 
             current_n += 1
-        
+
         return int_S, int_I, int_R
 
 
@@ -125,20 +125,20 @@ class EpidemicSIR:
         self.R_vector.append(self.R) #day 0
 
         #internal variable for the calculation
-        float_S = self.S
-        float_I = self.I
-        float_R = self.R
+        diffeq_S = self.S
+        diffeq_I = self.I
+        diffeq_R = self.R
         vax_request = None
 
         while self.I_vector[-1] != 0:
 
-            float_S, float_I, float_R = self.DifferentialEq(float_S, float_I, float_R)
-            
-            int_S, int_I, int_R = self.Approximation(float_S, float_I, float_R)
+            diffeq_S, diffeq_I, diffeq_R = self.DifferentialEq(diffeq_S, diffeq_I, diffeq_R)
+
+            int_S, int_I, int_R = self.Approximation(diffeq_S, diffeq_I, diffeq_R)
 
             vax_request = self.Vaccine(scenario, vax_request, int_I)
 
-            self.t += 1
+            self.day += 1
             self.S_vector.append(int_S)
             self.I_vector.append(int_I)
             self.R_vector.append(int_R)
@@ -156,6 +156,6 @@ class EpidemicSIR:
             print("Vaccine/isolation day:", self.triggerday)
         elif scenario != "no measures" and self.triggerday == None:
             print("No Vaccine/isolation measures needed.")
-        print("Percentage of infected population:", (self.R/self.N)*100, "%")
-        print("Duration of the epidemic:",  self.t)
+        print("Percentage of infected population:", (self.R_vector[-1]/self.N)*100, "%")
+        print("Duration of the epidemic:",  self.day)
         print("-----------------------")
