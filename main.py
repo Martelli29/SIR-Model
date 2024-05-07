@@ -9,8 +9,8 @@ if __name__=="__main__":
     s,i,r = inp.SetSIR()
     scenario = inp.SetVaccine()
     
-    SIR=cl.EpidemicSIR(s, i, r, gamma, beta)
-    SIR.Evolve(scenario)
-    SIR.PrintResults(scenario)
+    SIR=cl.EpidemicSIR(s, i, r, gamma, beta, scenario)
+    SIR.Evolve()
+    SIR.PrintResults()
 
     dr.plot(SIR.S_vector, SIR.I_vector, SIR.R_vector, SIR.triggerday)
