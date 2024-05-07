@@ -25,49 +25,55 @@ class EpidemicSIR:
         self.triggerday = None
 
 
-    def Vaccine(self, scenario, vax_request, int_i):
+    def Vaccine(self, scenario, vax_request, gamma, beta):
         '''
         This method set the new possible values of beta and gamma once a scenario has been selected. 
         '''
-        
+
         if vax_request == None:
         
             if scenario == "no measures":
+                
                 vax_request = False
             
-            elif int_i > 0.1*self.N and scenario == "light lockdown":
+            elif self.I_vector[-1] > 0.1 * self.N and scenario == "light lockdown":
+                
                 vax_request = True
-                self.triggerday = self.day
-                self.beta = self.beta - (0.2*self.beta)
+                self.triggerday = self.day - 1
+                
+                beta = beta - (0.2 * beta)
 
-            elif int_i > 0.1*self.N and scenario == "heavy lockdown":
+            elif self.I_vector[-1] > 0.1 * self.N and scenario == "heavy lockdown":
+                
                 vax_request = True
-                self.triggerday = self.day
+                self.triggerday = self.day - 1
 
-                self.beta = self.beta - (0.7*self.beta)
+                beta = beta - (0.7 * beta)
             
-            elif int_i > 0.1*self.N and scenario == "weakly effective vaccine":
+            elif self.I_vector[-1] > 0.1 * self.N and scenario == "weakly effective vaccine":
+                
                 vax_request = True
-                self.triggerday = self.day
+                self.triggerday = self.day - 1
 
-                self.beta = self.beta - (0.2*self.beta)
-                self.gamma = self.gamma + (0.5*self.gamma)
+                beta = beta - (0.2 * beta)
+                gamma = gamma + (0.5 * gamma)
 
-            elif int_i > 0.1*self.N and scenario == "strongly effective vaccine":
+            elif self.I_vector[-1] > 0.1 * self.N and scenario == "strongly effective vaccine":
+
                 vax_request = True
-                self.triggerday = self.day
+                self.triggerday = self.day - 1
 
-                self.beta = self.beta - (0.6*self.beta)
-                self.gamma = self.gamma + (0.9*self.gamma)
+                beta = beta - (0.6 * beta)
+                gamma = gamma + (0.9 * gamma)
 
-        return vax_request
+        return vax_request, gamma, beta
 
 
-    def DifferentialEq(self, S, I, R):
+    def DifferentialEq(self, S, I, R, gamma, beta):
         # Evolution of the epidemic by the differential equation
-        deltaS = ((-self.beta) * S * I) / self.N
-        deltaI = ((self.beta * S * I / self.N) - self.gamma * I)
-        deltaR = self.gamma * I
+        deltaS = ((-beta) * S * I) / self.N
+        deltaI = ((beta * S * I / self.N) - gamma * I)
+        deltaR = gamma * I
 
         S += deltaS
         I += deltaI
@@ -119,7 +125,7 @@ class EpidemicSIR:
         Therefore, the algorithm incorporates a method to ensure accurate approximation.
         Values of the parameters are saved by filling the lists created in the constructor.
         '''
-
+        
         self.S_vector.append(self.S) #day 0
         self.I_vector.append(self.I) #day 0
         self.R_vector.append(self.R) #day 0
@@ -128,15 +134,17 @@ class EpidemicSIR:
         diffeq_S = self.S
         diffeq_I = self.I
         diffeq_R = self.R
+        gamma = self.gamma
+        beta = self.beta
         vax_request = None
 
         while self.I_vector[-1] != 0:
 
-            diffeq_S, diffeq_I, diffeq_R = self.DifferentialEq(diffeq_S, diffeq_I, diffeq_R)
+            vax_request, gamma, beta = self.Vaccine(scenario, vax_request, gamma, beta)
+
+            diffeq_S, diffeq_I, diffeq_R = self.DifferentialEq(diffeq_S, diffeq_I, diffeq_R, gamma, beta)
 
             int_S, int_I, int_R = self.Approximation(diffeq_S, diffeq_I, diffeq_R)
-
-            vax_request = self.Vaccine(scenario, vax_request, int_I)
 
             self.day += 1
             self.S_vector.append(int_S)

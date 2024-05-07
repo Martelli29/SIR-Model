@@ -319,56 +319,54 @@ def test_Evolve_NoVaccineNecessary():
     assert(test.gamma == 0.05 and test.beta == 0.0)
 
 
-def test_Evolve_Scenario1():
+def test_Vaccine_Scenario1():
     '''
     This test checks if beta parameter (infection probability) is reduced by 20% due
     to the activation of scenario 1.
     '''
 
-    test=epd.EpidemicSIR(10000, 1, 0, 0.01, 0.5)
-    test.Evolve("light lockdown")
+    test=epd.EpidemicSIR(1000,1000,0,0.01,0.5)
+    test.I_vector.append(1000)
+    vax, gamma, beta = test.Vaccine("light lockdown", None, 0.01, 0.5)
+    assert(beta == 0.4)
 
-    assert(test.beta==0.4)
-
-
-def test_Evolve_Scenario2():
+def test_Vaccine_Scenario2():
     '''
     This test checks if beta parameter (infection probability) is reduced by 70% due
     to the activation of scenario 2.
     '''
 
-    test=epd.EpidemicSIR(10000, 1, 0, 0.01, 0.9)
-    test.Evolve("heavy lockdown")
+    test=epd.EpidemicSIR(1000,1000,0,0.01,0.5)
+    test.I_vector.append(1000)
+    vax, gamma, beta = test.Vaccine("heavy lockdown", None, 0.01, 0.9)
+    assert(beta == 0.27)
 
-    assert(test.beta==0.27)
-
-
-def test_Evolve_Scenario3():
+def test_Vaccine_Scenario3():
     '''
     This test checks if beta parameter (infection probability) is reduced by 20% and gamma
     parameter (healing probability) is increased by 50% due to the activation of scenario 3.
     '''
 
-    test=epd.EpidemicSIR(10000, 1, 0, 0.1, 0.5)
-    test.Evolve("weakly effective vaccine")
-    test.gamma = round(test.gamma, 5)
+    test=epd.EpidemicSIR(1000, 1000, 0, 0.1, 0.5)
+    test.I_vector.append(1000)
+    vax, gamma, beta = test.Vaccine("weakly effective vaccine", None, 0.1, 0.5)
+    gamma = round(gamma, 5)
 
-    assert(test.gamma == 0.15 and test.beta == 0.4)
+    assert(gamma == 0.15 and beta == 0.4)
 
-
-def test_Evolve_Scenario4():
+def test_Vaccine_Scenario4():
     '''
     This test checks if beta parameter (infection probability) is reduced by 60% and gamma
     parameter (healing probability) is increased by 90% due to the activation of scenario 4.
     '''
 
-    test=epd.EpidemicSIR(10000, 1, 0, 0.1, 0.5)
-    test.Evolve("strongly effective vaccine")
-    test.gamma = round(test.gamma, 5)
-    test.beta = round(test.beta, 5)
-    
-    assert(test.gamma == 0.19 and test.beta == 0.2)
+    test=epd.EpidemicSIR(1000, 1000, 0, 0.1, 0.5)
+    test.I_vector.append(1000)
+    vax, gamma, beta = test.Vaccine("strongly effective vaccine", None, 0.1, 0.5)
+    gamma = round(gamma, 5)
+    beta = round(beta, 5)
 
+    assert(gamma == 0.19 and beta == 0.2)
 
 def test_NoVaccineDay():
     '''
