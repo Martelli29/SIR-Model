@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-def plot(S, I, R, t):
+def plot(S, I, R, vaccine_day):
     '''
     This function takes as input three lists and uses the functionality of matplotlib
     to plot them in a graph.
@@ -10,8 +10,8 @@ def plot(S, I, R, t):
     plt.plot(I, color="red")
     plt.plot(R, color="black")
 
-    if t != None:
-        plt.axvline(t, color='gray', linestyle='dashed', linewidth=1)
+    if vaccine_day != None:
+        plt.axvline(vaccine_day, color='gray', linestyle='dashed', linewidth=1)
     else:
         pass
     
