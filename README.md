@@ -96,8 +96,9 @@ In first example we will see the output with $\gamma$=0.05 and $\beta$=0.3:
 ```shell
 -----------------------
 Dimension of the population: 1000000
-Percentage of infected population: 98.2378 %
-Duration of the epidemic: 410
+Selected scenario: no measures
+Percentage of infected population: 99.82130000000001 %
+Duration of the epidemic: 339
 -----------------------
 ```
 
@@ -110,6 +111,7 @@ Now, we will see the usage of a light isolation measures with the same parameter
 ```shell
 -----------------------
 Dimension of the population: 1000000
+Selected scenario: heavy lockdown
 Vaccine/isolation day: 53
 Percentage of infected population: 78.2412 %
 Duration of the epidemic: 533
@@ -125,6 +127,7 @@ Now we want to use the very effective vaccine option (scenario 4) and see how th
 ```shell
 -----------------------
 Dimension of the population: 1000000
+Selected scenario: no measures
 Percentage of infected population: 100.0 %
 Duration of the epidemic: 514
 -----------------------
@@ -137,6 +140,7 @@ No vaccine scenario.
 ```shell
 -----------------------
 Dimension of the population: 1000000
+Selected scenario: strongly effective vaccine
 Vaccine/isolation day: 31
 Percentage of infected population: 97.3699 %
 Duration of the epidemic: 323
