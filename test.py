@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 def test_Vaccine_Scenario1():
     '''
-    This test checks if beta parameter (infection probability) is reduced by 20% due
+    Checks if beta parameter (infection probability) is reduced by 20% due
     to the activation of scenario "light lockdown".
     '''
 
@@ -15,7 +15,7 @@ def test_Vaccine_Scenario1():
 
 def test_Vaccine_Scenario2():
     '''
-    This test checks if beta parameter (infection probability) is reduced by 70% due
+    Checks if beta parameter (infection probability) is reduced by 70% due
     to the activation of scenario "heavy lockdown".
     '''
 
@@ -27,7 +27,7 @@ def test_Vaccine_Scenario2():
 
 def test_Vaccine_Scenario3():
     '''
-    This test checks if beta parameter (infection probability) is reduced by 20% and gamma
+    Checks if beta parameter (infection probability) is reduced by 20% and gamma
     parameter (healing probability) is increased by 50% due to the activation of scenario "weakly effective vaccine".
     '''
 
@@ -40,7 +40,7 @@ def test_Vaccine_Scenario3():
 
 def test_Vaccine_Scenario4():
     '''
-    This test checks if beta parameter (infection probability) is reduced by 60% and gamma
+    Checks if beta parameter (infection probability) is reduced by 60% and gamma
     parameter (healing probability) is increased by 90% due to the activation of scenario "strongly effective vaccine".
     '''
 
@@ -52,9 +52,35 @@ def test_Vaccine_Scenario4():
     assert(gamma == 0.19 and beta == 0.2)
 
 
+def test_Vaccine_OnlyOnes():
+    '''
+    Checks the no modification of the parameters gamma and beta in a scenario 
+    different from "no measures" if the parameters were already changed in a previous iteration
+    of the cycle.
+    We can check this by passing a value different from None to the Vaccine(..) method.
+    '''
+
+    test=epd.EpidemicSIR(1000, 1000, 0, 0.1, 0.5, "strongly effective vaccine")
+    vax, gamma, beta = test.Vaccine(True, 0.1, 0.5)
+
+    assert(vax == True and gamma == 0.1 and beta == 0.5)
+
+
+def test_Vaccine_NoMeasures():
+    '''
+    Checks the no modification of the parameters gamma and beta if the selected
+    scenario is "no measures".
+    '''
+
+    test=epd.EpidemicSIR(1000, 1000, 0, 0.1, 0.5, "no measures")
+    vax, gamma, beta = test.Vaccine(None, 0.1, 0.5)
+
+    assert(vax == False and gamma == 0.1 and beta == 0.5)
+
+
 def test_Evolve_ConservationOfN_1():
     '''
-    This test checks if the value of the total population (N) is conserved during the
+    Checks if the value of the total population (N) is conserved during the
     epidemic evolution.
     '''
 
@@ -78,7 +104,7 @@ def test_Evolve_ConservationOfN_2():
 
 def test_Evolve_DecresentS_1():
     '''
-    This test checks if the value of subsceptible population doesn't increase during
+    Checks if the value of subsceptible population doesn't increase during
     the epidemic simulation.
     '''
 
@@ -91,7 +117,7 @@ def test_Evolve_DecresentS_1():
 
 def test_Evolve_DecresentS_2():
     '''
-    This test checks if the value of subsceptible population doesn't increase during
+    Checks if the value of subsceptible population doesn't increase during
     the epidemic simulation using a very small numbers for gamma and beta.
     '''
 
@@ -104,7 +130,7 @@ def test_Evolve_DecresentS_2():
 
 def test_Evolve_DecresentS_3():
     '''
-    This test checks if the value of subsceptible population doesn't increase during
+    Checks if the value of subsceptible population doesn't increase during
     the epidemic simulation using a very small number of subscptible.
     '''
 
@@ -117,7 +143,7 @@ def test_Evolve_DecresentS_3():
 
 def test_Evolve_DecresentS_4():
     '''
-    This test checks if the value of subsceptible population doesn't increase during
+    Checks if the value of subsceptible population doesn't increase during
     the epidemic simulation using a big numbers for gamma and beta.
     '''
 
@@ -130,7 +156,7 @@ def test_Evolve_DecresentS_4():
 
 def test_Evolve_ZeroInfected():
     '''
-    This test checks if the value of subsecptible doesn't change if there are no
+    Checks if the value of subsecptible doesn't change if there are no
     infected population.
     '''
 
@@ -143,7 +169,7 @@ def test_Evolve_ZeroInfected():
 
 def test_Evolve_SimulationTime1():
     '''
-    This test checks if the duration of the simulation is equal to 0 if the number of infected
+    Checks if the duration of the simulation is equal to 0 if the number of infected
     is equal to 0
     '''
 
@@ -155,7 +181,7 @@ def test_Evolve_SimulationTime1():
 
 def test_Evolve_SimulationTime2():
     '''
-    This test checks if the duration of the simulation is equal to 1 if the healing probability
+    Checks if the duration of the simulation is equal to 1 if the healing probability
     is equal to 1 and infection probability is equal to 0.
     '''
 
@@ -167,7 +193,7 @@ def test_Evolve_SimulationTime2():
 
 def test_Evolve_ZeroInfection():
     '''
-    This test checks if the values of subsceptible doesn't change if there are some
+    Checks if the values of subsceptible doesn't change if there are some
     infected population with 0.0% probability to infect. 
     '''
 
@@ -179,7 +205,7 @@ def test_Evolve_ZeroInfection():
 
 def test_Evolve_NoEpidemic():
     '''
-    This test checks if the values of subsceptible population remain unchanged if we have
+    Checks if the values of subsceptible population remain unchanged if we have
     no infected people.
     '''
 
@@ -192,7 +218,7 @@ def test_Evolve_NoEpidemic():
 
 def test_Evolve_NoVaccineNecessary_1():
     '''
-    This test checks the no activation of vaccine if light lockdown scenario is selected but
+    Checks the no activation of vaccine if light lockdown scenario is selected but
     the infected population doesn't reach a value equal to 10% of total population.
     '''
 
@@ -207,7 +233,7 @@ def test_Evolve_NoVaccineNecessary_1():
 
 def test_Evolve_NoVaccineNecessary_2():
     '''
-    This test checks the no activation of vaccine if heavy lockdown scenario is selected but
+    Checks the no activation of vaccine if heavy lockdown scenario is selected but
     the infected population doesn't reach a value equal to 10% of total population.
     '''
 
@@ -222,7 +248,7 @@ def test_Evolve_NoVaccineNecessary_2():
 
 def test_Evolve_NoVaccineNecessary_3():
     '''
-    This test checks the no activation of vaccine if weakly effective vaccine scenario is selected but
+    Checks the no activation of vaccine if weakly effective vaccine scenario is selected but
     the infected population doesn't reach a value equal to 10% of total population.
     '''
 
@@ -237,7 +263,7 @@ def test_Evolve_NoVaccineNecessary_3():
 
 def test_Evolve_NoVaccineNecessary_4():
     '''
-    This test checks the no activation of vaccine if strongly effective vaccine scenario is selected but
+    Checks the no activation of vaccine if strongly effective vaccine scenario is selected but
     the infected population doesn't reach a value equal to 10% of total population.
     '''
 
@@ -252,7 +278,7 @@ def test_Evolve_NoVaccineNecessary_4():
 
 def test_NoVaccineDay():
     '''
-    This test checks the non activation of the vaccine/isolation day even if user has
+    Checks the non activation of the vaccine/isolation day even if user has
     enabled the proper option but 10% of infected people is never reached.
     '''
 
@@ -264,7 +290,7 @@ def test_NoVaccineDay():
 
 def test_VaccineDay():#giustoo, forse fare per ogni opzione
     '''
-    This test checks the activation of the vaccine/isolation day if user has
+    Checks the activation of the vaccine/isolation day if user has
     enabled the proper option and 10% of people is infected.
     '''
         
