@@ -78,6 +78,61 @@ def test_Vaccine_NoMeasures():
     assert(vax == False and gamma == 0.1 and beta == 0.5)
 
 
+def test_DiffEq_Float():
+    '''
+    Checks the correct type (float) of the returned variable S, I, R
+    '''
+
+    test=epd.EpidemicSIR(10000, 10000, 0, 0.1, 0.3, "no measures")
+    S, I, R = test.DifferentialEq(10000, 10000, 0, 0.1, 0.3)
+
+    assert(type(S) == float and type(I) == float and type(R) == float)
+
+
+def test_DiffEq_ZeroBeta():
+    '''
+    Check the no variation of S if we use a value of beta equal to 0.
+    '''
+
+    test=epd.EpidemicSIR(10000, 10000, 0, 0.1, 0.0, "no measures")
+    S, I, R = test.DifferentialEq(10000, 10000, 0, 0.1, 0.0)
+
+    assert(S == 10000)
+
+def test_DiffEq_ZeroGamma():
+    '''
+    Checks the no variation of R if we use a value of gamma equal to 0
+    '''
+
+    test=epd.EpidemicSIR(10000, 10000, 0, 0.0, 0.2, "no measures")
+    S, I, R = test.DifferentialEq(10000, 10000, 0, 0.0, 0.2)
+
+    assert(R == 0)
+
+def test_DiffEq_NoEvolution():
+    '''
+    Checks the no variation of all parameters (S, I, R) if the values
+    of gamma and beta are equal to 0.
+    '''
+
+    test=epd.EpidemicSIR(10000, 10000, 0, 0.0, 0.0, "no measures")
+    S, I, R = test.DifferentialEq(10000, 10000, 0, 0.0, 0.0)
+
+    assert(S == 10000 and I == 10000 and R == 0)
+
+
+def test_DiffEq_StandardEvolution():
+    '''
+    Checks the correct variation of all parameters (S, I, R) for
+    values of gamma and beta different than zero. 
+    '''
+
+    test=epd.EpidemicSIR(10000, 10000, 0, 1.0, 1.0, "no measures")
+    S, I, R = test.DifferentialEq(10000, 10000, 0, 1.0, 1.0)
+
+    assert(S == 5000 and I == 5000 and R == 10000)
+
+
 def test_Evolve_ConservationOfN_1():
     '''
     Checks if the value of the total population (N) is conserved during the
