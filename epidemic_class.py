@@ -1,34 +1,36 @@
 
 class EpidemicSIR:
     """
-    EpidemicSIR contains all the information on the epidemic and the functions to system evolve.
-    It takes as input all the parameters set by the users in the input.py file.
+    EpidemicSIR contains all the information about the epidemic and the methods to evolve the system.
+    It takes as input all the parameters passed by the users through the configuration file.
     """
 
-    def __init__(self, s, i, r, gamma, beta, scenario):
+    def __init__(self, config):
         """
         Constructor of the EpidemicSIR class, here there is the configuration of main parameters of the
-        simulation passed by the user and the creation of three vectors and two variables.
-        Vectors will store the values of S/I/R compartments for each day of the simulation, first
-        variable will keep the count of the duration of the simulation and the second variable
+        simulation passed by the user through the configuration file, the creation of three vectors and two variables.
+        Vectors store the values of S/I/R compartments for each day of the simulation, variable triggerday
+        keep the count of the duration of the simulation and variable day
         represent the day in which countermeasures were taken.
 
-        6 parameters needed:
-        S (int): number of the initial susceptible population.
-        I (int): number of the initial infected population.
-        R (int): number of the initial removed population.
-        gamma (float): healing probability after each day of the simulation.
-        beta (float): infection probability after each day of the simulation.
-        scenario (str): selected scenario for the simulation
+        1 parameter needed:
+            config (dictionary): contains the paramaters used for the epidemic: 
+                "S" (int): number of the initial susceptible population.
+                "I" (int): number of the initial infected population.
+                "R" (int): number of the initial removed population.
+                "gamma" (float): healing probability after each day of the simulation.
+                "beta" (float): infection probability after each day of the simulation.
+                "scenario" (str): selected scenario for the simulation.
         """
 
-        self.S = int(s)
-        self.I = int(i)
-        self.R = int(r)
-        self.N = int(s + i + r)  # total population
-        self.gamma = gamma      # healing probability
-        self.beta = beta        # infection probability
-        self.scenario = scenario
+        self.S = int(config["S"])
+        self.I = int(config["I"])
+        self.R = int(config["R"])
+        self.N = int(config["S"] + config["I"] +
+                     config["R"])  # total population
+        self.gamma = config["gamma"]       # healing probability
+        self.beta = config["beta"]        # infection probability
+        self.scenario = config["scenario"]
 
         self.S_vector = [self.S]  # day 0
         self.I_vector = [self.I]  # day 0
@@ -42,22 +44,23 @@ class EpidemicSIR:
         we want that the modification of the gamma and/or beta parameters is executed only once during the simulation.
         The modification of the parameters gamma and beta will be allowed only if the number of infetced people
         on a givne day are at least eqaul to 10% of the total population.
+        
         Five different scenario are available: 
-        no measures: gamma and beta unchanged.
-        light lockdown: 20% reduction of beta.
-        heavy lockdown: 70% reduction of beta.
-        weakly effective vaccine: 20% reduction of beta and 50 % increase of gamma.
-        strongly effective vaccine: 0% reduction of beta and 90 % increase of gamma.
+        -no measures: gamma and beta unchanged.
+        -light lockdown: 20% reduction of beta.
+        -heavy lockdown: 70% reduction of beta.
+        -weakly effective vaccine: 20% reduction of beta and 50 % increase of gamma.
+        -strongly effective vaccine: 60% reduction of beta and 90 % increase of gamma.
 
         3 parameters needed:
-        vax_request (None|bool): boolean variable that allow to change the gamma/beta parameters only once.
-        gamma (float): healing probability after each day of the simulation.
-        beta (float): infection probability after each day of the simulation.
+            vax_request (None|bool): boolean variable that allow to change the gamma/beta parameters only once.
+            gamma (float): healing probability after each day of the simulation.
+            beta (float): infection probability after each day of the simulation.
 
         return:
-        vax_request (bool): boolean variable that is setted to true if some countermeasures is been taken and viceversa.
-        gamma (float): new healing probability after the application (or not) of the countermeasures.
-        beta (float): new infection probability after the application (or not) of the countermeasures.
+            vax_request (bool): boolean variable that is setted to true if some countermeasures is been taken and viceversa.
+            gamma (float): new healing probability after the application (or not) of the countermeasures.
+            beta (float): new infection probability after the application (or not) of the countermeasures.
         """
 
         if vax_request == None:
@@ -104,16 +107,16 @@ class EpidemicSIR:
         susceptible, infected and removed for the next day of the epidemic.
 
         5 parameters needed:
-        S (float): number of susceptible population.
-        I (float): number of infected population.
-        R (float): number of removed population.
-        gamma (float): healing probability after each day of the simulation.
-        beta (float): infection probability after each day of the simulation.
+            S (float): number of susceptible population.
+            I (float): number of infected population.
+            R (float): number of removed population.
+            gamma (float): healing probability after each day of the simulation.
+            beta (float): infection probability after each day of the simulation.
 
         return:
-        S (float): number of susceptible population after the application of the differential eqautions.
-        I (float): number of infected population after the application of the differential eqautions.
-        R (float): number of removed population after the application of the differential eqautions.
+            S (float): number of susceptible population after the application of the differential eqautions.
+            I (float): number of infected population after the application of the differential eqautions.
+            R (float): number of removed population after the application of the differential eqautions.
         """
 
         deltaS = ((-beta) * S * I) / self.N
@@ -135,14 +138,14 @@ class EpidemicSIR:
         decimal part until the sum of S-I-R are equal to the total population.
 
         3 parameters needed:
-        float_S (float): number of susecptible population. 
-        float_I (float): number of infected population.
-        float_R (float): number of removed population.
+            float_S (float): number of susecptible population. 
+            float_I (float): number of infected population.
+            float_R (float): number of removed population.
 
         return:
-        int_S (int): number of susecptible population after conversion in whole number and approximation.
-        int_I (int): number of infected population after conversion in whole number and approximation.
-        int_R (int): number of removed population after conversion in whole number and approximation.
+            int_S (int): number of susecptible population after conversion in whole number and approximation.
+            int_I (int): number of infected population after conversion in whole number and approximation.
+            int_R (int): number of removed population after conversion in whole number and approximation.
         """
         # the integer part of the internal variables are assigned to the parameters S,I,R
         int_S = int(float_S)

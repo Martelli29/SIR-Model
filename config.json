@@ -1,0 +1,41 @@
+{
+    "beta": {
+        "description": "Infection probability (between 0 and 1)",
+        "options": ["float number, must be between 0 and 1"],
+        "value": 0.5
+    },
+    "gamma": {
+        "description": "Healing probability (between 0 and 1)",
+        "options": ["float number, must be between 0 and 1"],
+        "value": 0.03
+    },
+    "SIR": {
+        "description": "Initial values for SIR model",
+        "S": {
+            "description": "Number of susceptible people",
+            "options": ["must be a non negative integer"],
+            "value": 999999
+        },
+        "I": {
+            "description": "Number of infected people",
+            "options": ["must be a non negative integer"],
+            "value": 1
+        },
+        "R": {
+            "description": "Number of removed people",
+            "options": ["must be a non negative integer"],
+            "value": 0
+        }
+    },
+    "vaccine_scenario": {
+        "description": "Mitigation scenario",
+        "options": [
+            "no measures",
+            "light lockdown",
+            "heavy lockdown",
+            "weakly effective vaccine",
+            "strongly effective vaccine"
+        ],
+        "value": "strongly effective vaccine"
+    }
+}

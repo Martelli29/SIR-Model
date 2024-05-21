@@ -1,16 +1,13 @@
-import input as inp
-import epidemic_class as cl 
-import plot as dr
+import config as cfg
+import epidemic_class as cl
+import plot as pl
 
-if __name__=="__main__":
+if __name__ == "__main__":
+
+    config = cfg.Configuration()
     
-    gamma=inp.SetGamma()
-    beta=inp.SetBeta()
-    s,i,r = inp.SetSIR()
-    scenario = inp.SetVaccine()
-    
-    SIR=cl.EpidemicSIR(s, i, r, gamma, beta, scenario)
+    SIR = cl.EpidemicSIR(config)
     SIR.Evolve()
     SIR.PrintResults()
 
-    dr.plot(SIR.S_vector, SIR.I_vector, SIR.R_vector, SIR.triggerday)
+    pl.plot(SIR.S_vector, SIR.I_vector, SIR.R_vector, SIR.triggerday)
