@@ -7,8 +7,11 @@ def test_Vaccine_Scenario1():
     to the activation of scenario "light lockdown".
     """
 
-    test = epd.EpidemicSIR(1000, 1000, 0, 0.01, 0.5, "light lockdown")
+    config_test = {"S": 1000, "I": 1000, "R": 0, "gamma": 0.01,
+                   "beta": 0.5, "scenario": "light lockdown"}
+    test = epd.EpidemicSIR(config_test)
     vax, gamma, beta = test.Vaccine(None, 0.01, 0.5)
+
     assert (beta == 0.4)
 
 
@@ -18,7 +21,9 @@ def test_Vaccine_Scenario2():
     to the activation of scenario "heavy lockdown".
     """
 
-    test = epd.EpidemicSIR(1000, 1000, 0, 0.01, 0.5, "heavy lockdown")
+    config_test = {"S": 1000, "I": 1000, "R": 0, "gamma": 0.01,
+                   "beta": 0.5, "scenario": "heavy lockdown"}
+    test = epd.EpidemicSIR(config_test)
     vax, gamma, beta = test.Vaccine(None, 0.01, 0.9)
 
     assert (beta == 0.27)
@@ -30,7 +35,10 @@ def test_Vaccine_Scenario3():
     parameter (healing probability) is increased by 50% due to the activation of scenario "weakly effective vaccine".
     """
 
-    test = epd.EpidemicSIR(1000, 1000, 0, 0.1, 0.5, "weakly effective vaccine")
+    config_test = {"S": 1000, "I": 1000, "R": 0, "gamma": 0.01,
+                   "beta": 0.5, "scenario": "weakly effective vaccine"}
+
+    test = epd.EpidemicSIR(config_test)
     vax, gamma, beta = test.Vaccine(None, 0.1, 0.5)
     gamma = round(gamma, 5)
 
@@ -43,8 +51,10 @@ def test_Vaccine_Scenario4():
     parameter (healing probability) is increased by 90% due to the activation of scenario "strongly effective vaccine".
     """
 
-    test = epd.EpidemicSIR(1000, 1000, 0, 0.1, 0.5,
-                           "strongly effective vaccine")
+    config_test = {"S": 1000, "I": 1000, "R": 0, "gamma": 0.01,
+                   "beta": 0.5, "scenario": "strongly effective vaccine"}
+
+    test = epd.EpidemicSIR(config_test)
     vax, gamma, beta = test.Vaccine(None, 0.1, 0.5)
     gamma = round(gamma, 5)
     beta = round(beta, 5)
@@ -60,8 +70,10 @@ def test_Vaccine_OnlyOnes():
     We can check this by passing a value different from None to the Vaccine(..) method.
     """
 
-    test = epd.EpidemicSIR(1000, 1000, 0, 0.1, 0.5,
-                           "strongly effective vaccine")
+    config_test = {"S": 1000, "I": 1000, "R": 0, "gamma": 0.01,
+                   "beta": 0.5, "scenario": "strongly effective vaccine"}
+
+    test = epd.EpidemicSIR(config_test)
     vax, gamma, beta = test.Vaccine(True, 0.1, 0.5)
 
     assert (vax == True and gamma == 0.1 and beta == 0.5)
@@ -73,7 +85,10 @@ def test_Vaccine_NoMeasures():
     scenario is "no measures".
     """
 
-    test = epd.EpidemicSIR(1000, 1000, 0, 0.1, 0.5, "no measures")
+    config_test = {"S": 1000, "I": 1000, "R": 0, "gamma": 0.01,
+                   "beta": 0.5, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     vax, gamma, beta = test.Vaccine(None, 0.1, 0.5)
 
     assert (vax == False and gamma == 0.1 and beta == 0.5)
@@ -84,7 +99,10 @@ def test_DiffEq_Float():
     Checks the correct type (float) of the returned variable S, I, R
     """
 
-    test = epd.EpidemicSIR(10000, 10000, 0, 0.1, 0.3, "no measures")
+    config_test = {"S": 1000, "I": 1000, "R": 0, "gamma": 0.1,
+                   "beta": 0.3, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     S, I, R = test.DifferentialEq(10000, 10000, 0, 0.1, 0.3)
 
     assert (type(S) == float and type(I) == float and type(R) == float)
@@ -95,7 +113,10 @@ def test_DiffEq_ZeroBeta():
     Check the no variation of S if we use a value of beta equal to 0.
     """
 
-    test = epd.EpidemicSIR(10000, 10000, 0, 0.1, 0.0, "no measures")
+    config_test = {"S": 10000, "I": 10000, "R": 0, "gamma": 0.1,
+                   "beta": 0.0, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     S, I, R = test.DifferentialEq(10000, 10000, 0, 0.1, 0.0)
 
     assert (S == 10000)
@@ -106,7 +127,10 @@ def test_DiffEq_ZeroGamma():
     Checks the no variation of R if we use a value of gamma equal to 0
     """
 
-    test = epd.EpidemicSIR(10000, 10000, 0, 0.0, 0.2, "no measures")
+    config_test = {"S": 10000, "I": 10000, "R": 0, "gamma": 0.0,
+                   "beta": 0.2, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     S, I, R = test.DifferentialEq(10000, 10000, 0, 0.0, 0.2)
 
     assert (R == 0)
@@ -118,7 +142,10 @@ def test_DiffEq_NoEvolution():
     of gamma and beta are equal to 0.
     """
 
-    test = epd.EpidemicSIR(10000, 10000, 0, 0.0, 0.0, "no measures")
+    config_test = {"S": 10000, "I": 10000, "R": 0, "gamma": 0.0,
+                   "beta": 0.0, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     S, I, R = test.DifferentialEq(10000, 10000, 0, 0.0, 0.0)
 
     assert (S == 10000 and I == 10000 and R == 0)
@@ -130,7 +157,10 @@ def test_DiffEq_StandardEvolution():
     values of gamma and beta different from zero.
     """
 
-    test = epd.EpidemicSIR(10000, 10000, 0, 1.0, 1.0, "no measures")
+    config_test = {"S": 10000, "I": 10000, "R": 0, "gamma": 1.0,
+                   "beta": 1.0, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     S, I, R = test.DifferentialEq(10000, 10000, 0, 1.0, 1.0)
 
     assert (S == 5000 and I == 5000 and R == 10000)
@@ -141,7 +171,10 @@ def test_Approximation_IncrementR():
     Checks the correct increment of R if it has the biggest decimal part.
     """
 
-    test = epd.EpidemicSIR(8, 1, 1, 0.1, 0.1, "no measures")
+    config_test = {"S": 8, "I": 1, "R": 1, "gamma": 0.1,
+                   "beta": 0.1, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     S, I, R = test.Approximation(7.1, 1.2, 1.3)
 
     assert (S == 7 and I == 1 and R == 2)
@@ -152,7 +185,10 @@ def test_Approximation_IncrementI():
     Checks the correct increment of I if it has the biggest decimal part.
     """
 
-    test = epd.EpidemicSIR(8, 1, 1, 0.1, 0.1, "no measures")
+    config_test = {"S": 8, "I": 1, "R": 1, "gamma": 0.1,
+                   "beta": 0.1, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     S, I, R = test.Approximation(7.1, 1.5, 1.3)
 
     assert (S == 7 and I == 2 and R == 1)
@@ -164,7 +200,10 @@ def test_Approximation_IncrementS():
     if, after the increment, it isn't bigger than the value of S before the evolution.
     """
 
-    test = epd.EpidemicSIR(8, 1, 1, 0.1, 0.1, "no measures")
+    config_test = {"S": 8, "I": 1, "R": 1, "gamma": 0.1,
+                   "beta": 0.1, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     test.S_vector[-1] = 8
     S, I, R = test.Approximation(7.5, 1.2, 1.3)
 
@@ -177,7 +216,10 @@ def test_Approximation_NoIncrementS():
     but, after the increment, it is bigger than the value of S before the evolution.
     """
 
-    test = epd.EpidemicSIR(8, 1, 1, 0.1, 0.1, "no measures")
+    config_test = {"S": 8, "I": 1, "R": 1, "gamma": 0.1,
+                   "beta": 0.1, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     test.S_vector[-1] = 7
     S, I, R = test.Approximation(7.5, 1.2, 1.3)
 
@@ -189,7 +231,10 @@ def test_Approximation_PopulationConservation():
     Checks if the total population is conserved after the approximation.
     """
 
-    test = epd.EpidemicSIR(10000, 10000, 0, 1.0, 1.0, "no measures")
+    config_test = {"S": 10000, "I": 10000, "R": 0, "gamma": 1.0,
+                   "beta": 1.0, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     S, I, R = test.Approximation(10000, 10000, 0)
 
     assert (S + I + R == test.N)
@@ -200,7 +245,10 @@ def test_Approximation_type():
     Checks the correct type of the (S, I, R) parameters after the approximation (int).
     """
 
-    test = epd.EpidemicSIR(8, 1, 1, 0.1, 0.1, "no measures")
+    config_test = {"S": 8, "I": 1, "R": 1, "gamma": 0.1,
+                   "beta": 0.1, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     S, I, R = test.Approximation(7.1, 1.5, 1.3)
 
     assert (type(S) == int and type(I) == int and type(R) == int)
@@ -212,7 +260,10 @@ def test_Evolve_ConservationOfN_1():
     epidemic evolution.
     """
 
-    test = epd.EpidemicSIR(30000, 1, 0, 0.1, 0.3, "no measures")
+    config_test = {"S": 30000, "I": 1, "R": 0, "gamma": 0.1,
+                   "beta": 0.3, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
     for i in range(test.day):
         assert (test.S_vector[i] + test.I_vector[i] +
@@ -225,7 +276,10 @@ def test_Evolve_ConservationOfN_2():
     conserved during the epidemic evolution.
     """
 
-    test = epd.EpidemicSIR(30000000, 1, 0, 0.1, 0.3, "no measures")
+    config_test = {"S": 30000000, "I": 1, "R": 0, "gamma": 0.1,
+                   "beta": 0.3, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
     for i in range(test.day):
         assert (test.S_vector[i] + test.I_vector[i] +
@@ -238,7 +292,10 @@ def test_Evolve_DecresentS_1():
     the epidemic simulation.
     """
 
-    test = epd.EpidemicSIR(30000, 1, 0, 0.1, 0.3, "no measures")
+    config_test = {"S": 30000, "I": 1, "R": 0, "gamma": 0.1,
+                   "beta": 0.3, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
     for i in range(1, test.day):
@@ -251,7 +308,10 @@ def test_Evolve_DecresentS_2():
     the epidemic simulation using a very small numbers for gamma and beta.
     """
 
-    test = epd.EpidemicSIR(30000, 1, 0, 0.001, 0.003, "no measures")
+    config_test = {"S": 30000, "I": 1, "R": 0, "gamma": 0.001,
+                   "beta": 0.003, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
     for i in range(1, test.day):
@@ -264,7 +324,10 @@ def test_Evolve_DecresentS_3():
     the epidemic simulation using a very small number of susceptible.
     """
 
-    test = epd.EpidemicSIR(100, 1, 0, 0.01, 0.03, "no measures")
+    config_test = {"S": 100, "I": 1, "R": 0, "gamma": 0.01,
+                   "beta": 0.03, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
     for i in range(1, test.day):
@@ -277,7 +340,10 @@ def test_Evolve_DecresentS_4():
     the epidemic simulation using a big numbers for gamma and beta.
     """
 
-    test = epd.EpidemicSIR(100000, 1, 0, 0.5, 0.6, "no measures")
+    config_test = {"S": 100000, "I": 1, "R": 0, "gamma": 0.5,
+                   "beta": 0.6, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
     for i in range(1, test.day):
@@ -290,7 +356,10 @@ def test_Evolve_ZeroInfected():
     infected population.
     """
 
-    test = epd.EpidemicSIR(1000, 0, 0, 0.2, 0.2, "no measures")
+    config_test = {"S": 1000, "I": 0, "R": 0, "gamma": 0.2,
+                   "beta": 0.2, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
     for i in range(test.day):
@@ -304,7 +373,10 @@ def test_Evolve_SimulationTimeZero():
     is equal to 0
     """
 
-    test = epd.EpidemicSIR(1000, 0, 0, 0.2, 0.2, "no measures")
+    config_test = {"S": 1000, "I": 0, "R": 0, "gamma": 0.2,
+                   "beta": 0.2, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
     assert (test.day - 1 == 0)
@@ -316,7 +388,10 @@ def test_Evolve_SimulationTimeOne():
     is equal to 1 and infection probability is equal to 0.
     """
 
-    test = epd.EpidemicSIR(1000, 10, 0, 1.0, 0.0, "no measures")
+    config_test = {"S": 1000, "I": 10, "R": 0, "gamma": 1.0,
+                   "beta": 0.0, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
     assert (test.day - 1 == 1)
@@ -328,7 +403,10 @@ def test_Evolve_ZeroInfection():
     infected population with 0.0% probability to infect. 
     """
 
-    test = epd.EpidemicSIR(1000, 10, 0, 0.2, 0.0, "no measures")
+    config_test = {"S": 1000, "I": 10, "R": 0, "gamma": 0.2,
+                   "beta": 0.0, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
     assert (test.S_vector[-1] == 1000 and test.I_vector[-1]
@@ -341,7 +419,10 @@ def test_Evolve_NoEpidemic():
     no infected people.
     """
 
-    test = epd.EpidemicSIR(1000, 0, 0, 0.5, 0.5, "strongly effective vaccine")
+    config_test = {"S": 1000, "I": 0, "R": 0, "gamma": 0.5,
+                   "beta": 0.5, "scenario": "strongly effective vaccine"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
     for i in range(test.day):
@@ -355,7 +436,10 @@ def test_Evolve_NoVaccineNecessary_1():
     the infected population doesn't reach a value equal to 10% of total population.
     """
 
-    test = epd.EpidemicSIR(10000, 10, 0, 0.05, 0.0, "light lockdown")
+    config_test = {"S": 10000, "I": 10, "R": 0, "gamma": 0.05,
+                   "beta": 0.0, "scenario": "light lockdown"}
+
+    test = epd.EpidemicSIR(config_test)
     v, gamma, beta = test.Vaccine(None, 0.05, 0.0)
 
     gamma = round(test.gamma, 5)
@@ -370,7 +454,10 @@ def test_Evolve_NoVaccineNecessary_2():
     the infected population doesn't reach a value equal to 10% of total population.
     """
 
-    test = epd.EpidemicSIR(10000, 10, 0, 0.05, 0.0, "heavy lockdown")
+    config_test = {"S": 10000, "I": 10, "R": 0, "gamma": 0.05,
+                   "beta": 0.0, "scenario": "heavy lockdown"}
+
+    test = epd.EpidemicSIR(config_test)
     v, gamma, beta = test.Vaccine(None, 0.05, 0.0)
 
     gamma = round(test.gamma, 5)
@@ -385,7 +472,10 @@ def test_Evolve_NoVaccineNecessary_3():
     the infected population doesn't reach a value equal to 10% of total population.
     """
 
-    test = epd.EpidemicSIR(10000, 10, 0, 0.05, 0.0, "weakly effective vaccine")
+    config_test = {"S": 10000, "I": 10, "R": 0, "gamma": 0.05,
+                   "beta": 0.0, "scenario": "weakly effective vaccine"}
+
+    test = epd.EpidemicSIR(config_test)
     v, gamma, beta = test.Vaccine(None, 0.05, 0.0)
 
     gamma = round(test.gamma, 5)
@@ -400,8 +490,10 @@ def test_Evolve_NoVaccineNecessary_4():
     the infected population doesn't reach a value equal to 10% of total population.
     """
 
-    test = epd.EpidemicSIR(10000, 10, 0, 0.05, 0.0,
-                           "strongly effective vaccine")
+    config_test = {"S": 10000, "I": 10, "R": 0, "gamma": 0.05,
+                   "beta": 0.0, "scenario": "strongly effective vaccine"}
+
+    test = epd.EpidemicSIR(config_test)
     v, gamma, beta = test.Vaccine(None, 0.05, 0.0)
 
     gamma = round(test.gamma, 5)
@@ -415,7 +507,10 @@ def test_Evolve_VectorsLength():
     Checks if the size of the S/I/R vectors are equal to the duration of the simulation.
     """
 
-    test = epd.EpidemicSIR(30000, 1, 0, 0.1, 0.3, "no measures")
+    config_test = {"S": 30000, "I": 1, "R": 0, "gamma": 0.1,
+                   "beta": 0.3, "scenario": "no measures"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
     assert (len(test.S_vector) == len(test.I_vector)
@@ -428,8 +523,10 @@ def test_NoVaccineDay():
     enabled the proper option but 10% of infected people is never reached.
     """
 
-    test = epd.EpidemicSIR(10000, 10, 0, 0.1, 0.1,
-                           "strongly effective vaccine")
+    config_test = {"S": 10000, "I": 10, "R": 0, "gamma": 0.1,
+                   "beta": 0.1, "scenario": "strongly effective vaccine"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
     assert (test.triggerday == None)
@@ -441,8 +538,10 @@ def test_VaccineDay():
     enabled the proper option and 10% of people is infected.
     """
 
-    test = epd.EpidemicSIR(10000, 500, 0, 0.1, 1.0,
-                           "strongly effective vaccine")
+    config_test = {"S": 10000, "I": 500, "R": 0, "gamma": 0.1,
+                   "beta": 1.0, "scenario": "strongly effective vaccine"}
+
+    test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
     assert (test.triggerday == 2)
