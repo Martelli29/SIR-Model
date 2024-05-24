@@ -93,6 +93,24 @@ def test_Vaccine_NoMeasures():
     assert (vax == False and gamma == 0.1 and beta == 0.5)
 
 
+def test_Vaccine_NoVaccineNecessary():
+    """
+    Checks the no activation of vaccine if light lockdown scenario is selected but
+    the infected population doesn't reach a value equal to 10% of total population.
+    """
+
+    config_test = {"S": 10000, "I": 10, "R": 0, "gamma": 0.05,
+                   "beta": 0.0, "scenario": "light lockdown"}
+
+    test = epd.EpidemicSIR(config_test)
+    v, gamma, beta = test.Vaccine(None, 0.05, 0.0)
+
+    gamma = round(gamma, 5)
+    beta = round(beta, 5)
+
+    assert (gamma == 0.05 and beta == 0.0)
+
+
 def test_DiffEq_Float():
     """
     Checks the correct type (float) of the returned variable S, I, R
@@ -427,78 +445,6 @@ def test_Evolve_NoEpidemic():
     for i in range(test.day):
         assert (test.S_vector[i] == 1000 and test.I_vector[i]
                 == 0 and test.R_vector[i] == 0)
-
-
-def test_Evolve_NoVaccineNecessary_1():
-    """
-    Checks the no activation of vaccine if light lockdown scenario is selected but
-    the infected population doesn't reach a value equal to 10% of total population.
-    """
-
-    config_test = {"S": 10000, "I": 10, "R": 0, "gamma": 0.05,
-                   "beta": 0.0, "scenario": "light lockdown"}
-
-    test = epd.EpidemicSIR(config_test)
-    v, gamma, beta = test.Vaccine(None, 0.05, 0.0)
-
-    gamma = round(test.gamma, 5)
-    beta = round(test.beta, 5)
-
-    assert (gamma == 0.05 and beta == 0.0)
-
-
-def test_Evolve_NoVaccineNecessary_2():
-    """
-    Checks the no activation of vaccine if heavy lockdown scenario is selected but
-    the infected population doesn't reach a value equal to 10% of total population.
-    """
-
-    config_test = {"S": 10000, "I": 10, "R": 0, "gamma": 0.05,
-                   "beta": 0.0, "scenario": "heavy lockdown"}
-
-    test = epd.EpidemicSIR(config_test)
-    v, gamma, beta = test.Vaccine(None, 0.05, 0.0)
-
-    gamma = round(test.gamma, 5)
-    beta = round(test.beta, 5)
-
-    assert (gamma == 0.05 and beta == 0.0)
-
-
-def test_Evolve_NoVaccineNecessary_3():
-    """
-    Checks the no activation of vaccine if weakly effective vaccine scenario is selected but
-    the infected population doesn't reach a value equal to 10% of total population.
-    """
-
-    config_test = {"S": 10000, "I": 10, "R": 0, "gamma": 0.05,
-                   "beta": 0.0, "scenario": "weakly effective vaccine"}
-
-    test = epd.EpidemicSIR(config_test)
-    v, gamma, beta = test.Vaccine(None, 0.05, 0.0)
-
-    gamma = round(test.gamma, 5)
-    beta = round(test.beta, 5)
-
-    assert (gamma == 0.05 and beta == 0.0)
-
-
-def test_Evolve_NoVaccineNecessary_4():
-    """
-    Checks the no activation of vaccine if strongly effective vaccine scenario is selected but
-    the infected population doesn't reach a value equal to 10% of total population.
-    """
-
-    config_test = {"S": 10000, "I": 10, "R": 0, "gamma": 0.05,
-                   "beta": 0.0, "scenario": "strongly effective vaccine"}
-
-    test = epd.EpidemicSIR(config_test)
-    v, gamma, beta = test.Vaccine(None, 0.05, 0.0)
-
-    gamma = round(test.gamma, 5)
-    beta = round(test.beta, 5)
-
-    assert (gamma == 0.05 and beta == 0.0)
 
 
 def test_Evolve_VectorsLength():
