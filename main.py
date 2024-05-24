@@ -10,4 +10,4 @@ if __name__ == "__main__":
     SIR.Evolve()
     SIR.PrintResults()
 
-    pl.plot(SIR.S_vector, SIR.I_vector, SIR.R_vector, SIR.triggerday)
+    pl.plot(SIR.S_vector, SIR.I_vector, SIR.R_vector, SIR.vaccine_day)

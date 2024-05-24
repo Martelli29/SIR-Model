@@ -474,7 +474,7 @@ def test_NoVaccineDay():
     test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
-    assert (test.triggerday == None)
+    assert (test.vaccine_day == None)
 
 
 def test_VaccineDay():
@@ -489,4 +489,4 @@ def test_VaccineDay():
     test = epd.EpidemicSIR(config_test)
     test.Evolve()
 
-    assert (test.triggerday == 2)
+    assert (test.vaccine_day == 2)

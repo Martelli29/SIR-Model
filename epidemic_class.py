@@ -9,7 +9,7 @@ class EpidemicSIR:
         """
         Constructor of the EpidemicSIR class, here there is the configuration of main parameters of the
         simulation passed by the user through the configuration file, the creation of three vectors and two variables.
-        Vectors store the values of S/I/R compartments for each day of the simulation, variable triggerday
+        Vectors store the values of S/I/R compartments for each day of the simulation, variable vaccine_day
         keep the count of the duration of the simulation and variable day
         represent the day in which countermeasures were taken.
 
@@ -35,7 +35,7 @@ class EpidemicSIR:
         self.S_vector = [self.S]  # day 0
         self.I_vector = [self.I]  # day 0
         self.R_vector = [self.R]  # day 0
-        self.triggerday = None
+        self.vaccine_day = None
         self.day = 1
 
     def Vaccine(self, vax_request, gamma, beta):
@@ -72,21 +72,21 @@ class EpidemicSIR:
             elif self.I_vector[-1] > 0.1 * self.N and self.scenario == "light lockdown":
 
                 vax_request = True
-                self.triggerday = self.day - 1
+                self.vaccine_day = self.day - 1
 
                 beta = beta - (0.2 * beta)
 
             elif self.I_vector[-1] > 0.1 * self.N and self.scenario == "heavy lockdown":
 
                 vax_request = True
-                self.triggerday = self.day - 1
+                self.vaccine_day = self.day - 1
 
                 beta = beta - (0.7 * beta)
 
             elif self.I_vector[-1] > 0.1 * self.N and self.scenario == "weakly effective vaccine":
 
                 vax_request = True
-                self.triggerday = self.day - 1
+                self.vaccine_day = self.day - 1
 
                 beta = beta - (0.2 * beta)
                 gamma = gamma + (0.5 * gamma)
@@ -94,7 +94,7 @@ class EpidemicSIR:
             elif self.I_vector[-1] > 0.1 * self.N and self.scenario == "strongly effective vaccine":
 
                 vax_request = True
-                self.triggerday = self.day - 1
+                self.vaccine_day = self.day - 1
 
                 beta = beta - (0.6 * beta)
                 gamma = gamma + (0.9 * gamma)
@@ -225,9 +225,9 @@ class EpidemicSIR:
         print("-----------------------")
         print("Dimension of the population:", self.N)
         print("Selected scenario:", self.scenario)
-        if self.triggerday != None:
-            print("Vaccine/isolation day:", self.triggerday)
-        elif self.scenario != "no measures" and self.triggerday == None:
+        if self.vaccine_day != None:
+            print("Vaccine/isolation day:", self.vaccine_day)
+        elif self.scenario != "no measures" and self.vaccine_day == None:
             print("No Vaccine/isolation measures needed.")
         print("Percentage of infected population:",
               (self.R_vector[-1]/self.N)*100, "%")
