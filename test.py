@@ -65,12 +65,11 @@ def test_Vaccine_Scenario4():
 def test_Vaccine_OnlyOnes():
     """
     Checks the no modification of the parameters gamma and beta in a scenario
-    different from "no measures" if the parameters were already changed in a previous iteration
-    of the cycle.
-    We can check this by passing a value different from None to the Vaccine(..) method.
+    different from "no measures" if the a value different to None is passed
+    to the vaccine() method.
     """
 
-    config_test = {"S": 1000, "I": 1000, "R": 0, "gamma": 0.01,
+    config_test = {"S": 1000, "I": 1000, "R": 0, "gamma": 0.1,
                    "beta": 0.5, "scenario": "strongly effective vaccine"}
 
     test = epd.EpidemicSIR(config_test)
@@ -535,7 +534,7 @@ def test_NoVaccineDay():
 def test_VaccineDay():
     """
     Checks the activation of the vaccine/isolation day if user has
-    enabled the proper option and 10% of people is infected.
+    enabled a scenario different from "no measures" and 10% of people is infected.
     """
 
     config_test = {"S": 10000, "I": 500, "R": 0, "gamma": 0.1,
