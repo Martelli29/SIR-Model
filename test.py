@@ -1,7 +1,7 @@
 import epidemic_class as epd
 
 
-def test_Vaccine_Scenario1():
+def test_Vaccine_lightlockdown():
     """
     Checks if beta parameter (infection probability) is reduced by 20% due
     to the activation of scenario "light lockdown".
@@ -15,7 +15,7 @@ def test_Vaccine_Scenario1():
     assert (beta == 0.4)
 
 
-def test_Vaccine_Scenario2():
+def test_Vaccine_heavylockdown():
     """
     Checks if beta parameter (infection probability) is reduced by 70% due
     to the activation of scenario "heavy lockdown".
@@ -29,7 +29,7 @@ def test_Vaccine_Scenario2():
     assert (beta == 0.27)
 
 
-def test_Vaccine_Scenario3():
+def test_Vaccine_weakeffectivevax():
     """
     Checks if beta parameter (infection probability) is reduced by 20% and gamma
     parameter (healing probability) is increased by 50% due to the activation of scenario "weakly effective vaccine".
@@ -45,7 +45,7 @@ def test_Vaccine_Scenario3():
     assert (gamma == 0.15 and beta == 0.4)
 
 
-def test_Vaccine_Scenario4():
+def test_Vaccine_strongeffectivevax():
     """
     Checks if beta parameter (infection probability) is reduced by 60% and gamma
     parameter (healing probability) is increased by 90% due to the activation of scenario "strongly effective vaccine".
@@ -462,7 +462,7 @@ def test_Evolve_VectorsLength():
             == len(test.R_vector) == test.day)
 
 
-def test_NoVaccineDay():
+def test_Evolve_NoVaccineDay():
     """
     Checks the non activation of the vaccine/isolation day even if user has
     enabled the proper option but 10% of infected people is never reached.
@@ -477,7 +477,7 @@ def test_NoVaccineDay():
     assert (test.vaccine_day == None)
 
 
-def test_VaccineDay():
+def test_Evolve_VaccineDay():
     """
     Checks the activation of the vaccine/isolation day if user has
     enabled a scenario different from "no measures" and 10% of people is infected.
