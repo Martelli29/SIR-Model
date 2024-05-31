@@ -1,3 +1,5 @@
+from typing import Tuple
+
 
 class EpidemicSIR:
     """
@@ -5,7 +7,7 @@ class EpidemicSIR:
     It takes as input all the parameters passed by the users through the configuration file.
     """
 
-    def __init__(self, config):
+    def __init__(self, config: dict):
         """
         Constructor of the EpidemicSIR class, here there is the configuration of main parameters of the
         simulation passed by the user through the configuration file, the creation of three vectors and two variables.
@@ -38,13 +40,13 @@ class EpidemicSIR:
         self.vaccine_day = None
         self.day = 1
 
-    def Vaccine(self, vax_request, gamma, beta):
+    def Vaccine(self, vax_request: bool | None, gamma: float, beta: float) -> Tuple[bool | None, float, float]:
         """
         Method select the proper scenario that is given by the user in the constructor of the class,
         we want that the modification of the gamma and/or beta parameters is executed only once during the simulation.
         The modification of the parameters gamma and beta will be allowed only if the number of infetced people
         on a givne day are at least eqaul to 10% of the total population.
-        
+
         Five different scenario are available: 
         -no measures: gamma and beta unchanged.
         -light lockdown: 20% reduction of beta.
@@ -101,7 +103,7 @@ class EpidemicSIR:
 
         return vax_request, gamma, beta
 
-    def DifferentialEq(self, S, I, R, gamma, beta):
+    def DifferentialEq(self, S: float, I: float, R: float, gamma: float, beta: float) -> Tuple[float, float, float]:
         """
         Application of the differential eqautions of the SIR model for the calculation of the 
         susceptible, infected and removed for the next day of the epidemic.
@@ -129,7 +131,7 @@ class EpidemicSIR:
 
         return S, I, R
 
-    def Approximation(self, float_S, float_I, float_R):
+    def Approximation(self, S: float, I: float, R: float) -> Tuple[int, int, int]:
         """
         Takes the three float numbers of S/I/R and approximates them in three integer numbers.
         The float numbers are divided into whole part and deciaml part, then he checks if the sum
@@ -138,9 +140,9 @@ class EpidemicSIR:
         decimal part until the sum of S-I-R are equal to the total population.
 
         3 parameters needed:
-            float_S (float): number of susecptible population. 
-            float_I (float): number of infected population.
-            float_R (float): number of removed population.
+            S (float): number of susecptible population. 
+            I (float): number of infected population.
+            R (float): number of removed population.
 
         return:
             int_S (int): number of susecptible population after conversion in whole number and approximation.
@@ -148,14 +150,14 @@ class EpidemicSIR:
             int_R (int): number of removed population after conversion in whole number and approximation.
         """
         # the integer part of the internal variables are assigned to the parameters S,I,R
-        int_S = int(float_S)
-        int_I = int(float_I)
-        int_R = int(float_R)
+        int_S = int(S)
+        int_I = int(I)
+        int_R = int(R)
 
         # calculation of the decimal part of the internal variables
-        decimal_s = float_S - int_S
-        decimal_i = float_I - int_I
-        decimal_r = float_R - int_R
+        decimal_s = S - int_S
+        decimal_i = I - int_I
+        decimal_r = R - int_R
 
         current_n = int(int_S + int_I + int_R)  # current values of N
 
@@ -179,7 +181,7 @@ class EpidemicSIR:
 
         return int_S, int_I, int_R
 
-    def Evolve(self):
+    def Evolve(self) -> None:
         """
         This method is the core engine of the epidemic evolution.
         Calls the methods that works the differential equations of the SIR model, the approximation
@@ -217,7 +219,7 @@ class EpidemicSIR:
             self.I_vector.append(int_I)
             self.R_vector.append(int_R)
 
-    def PrintResults(self):
+    def PrintResults(self) -> None:
         """
         Print function, logs the main parameters of the simulation to the terminal.
         """
