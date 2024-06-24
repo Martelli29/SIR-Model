@@ -1,7 +1,7 @@
 import json
 
 
-def load_config():
+def load_config() -> None:
     """
     Loading of the configuration file named 'config.json', if the file name is different,
     an error is raised.
@@ -17,7 +17,7 @@ def load_config():
         raise FileNotFoundError("Config file not found.")
 
 
-def CheckBeta(beta):
+def CheckBeta(beta : float) -> None:
     """
     Checks if the parameter beta (infection probability) given as input
     by the user has a value between 0 and 1 and that it is float type.
@@ -36,7 +36,7 @@ def CheckBeta(beta):
         raise ValueError("Beta parameter must be between zero and one.")
 
 
-def CheckGamma(gamma):
+def CheckGamma(gamma : float) -> None:
     """
     Checks if the parameter gamma (healing probability) given as input
     by the user has a value between 0 and 1 and that it is float type.
@@ -55,7 +55,7 @@ def CheckGamma(gamma):
         raise ValueError("Gamma parameter must be between zero and one.")
 
 
-def CheckSIR(s, i, r):
+def CheckSIR(s : int, i : int, r : int) -> None:
     """
     Checks if the user gives proper values through the configuration file.
     They must be non negative whole number and the total population must be
@@ -81,7 +81,7 @@ def CheckSIR(s, i, r):
         raise ValueError("Population must be greater than zero!!!")
 
 
-def CheckVaccine(scenario):
+def CheckVaccine(scenario : str) -> None:
     """
     Checks the correct selection and syntax of the selected scenario.
     Are available five different scenarios (no measures, light lockdown,
@@ -104,7 +104,7 @@ def CheckVaccine(scenario):
             "Only accepted answers are the strings:\n-no measures\n-light lockdown\n-heavy lockdown\n-weakly effective vaccine\n-strongly effective vaccine")
 
 
-def Configuration():
+def Configuration() -> dict[int, int, int, float, float, str]:
     """
     In this file we have the creation of the epidemic variable that are 
     inizialized through the access of the configuration file.
@@ -112,12 +112,12 @@ def Configuration():
     given by the user are suitable for the program.
 
     return:
-        S (int): number of the initial susceptible population.
-        I (int): number of the initial infected population.
-        R (int): number of the initial removed population.
-        gamma (float): healing probability after each day of the simulation.
-        beta (float): infection probability after each day of the simulation.
-        scenario (str): selected scenario for the simulation.
+        "S" (int): number of the initial susceptible population.
+        "I" (int): number of the initial infected population.
+        "R" (int): number of the initial removed population.
+        "gamma" (float): healing probability after each day of the simulation.
+        "beta" (float): infection probability after each day of the simulation.
+        "scenario" (str): selected scenario for the simulation.
     """
 
     config = load_config()  # loading of the config file
