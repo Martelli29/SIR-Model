@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 
-def plot(S: int, I: int, R: int, vaccine_day: None | int) -> None:
+def plot(S: list, I: list, R: list, vaccine_day: None | int) -> None:
     '''
     This function is used for plotting the trend of the epidemic in a graph through
     matplotlib library.
