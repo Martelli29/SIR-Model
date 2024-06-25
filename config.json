@@ -30,11 +30,11 @@
     "vaccine_scenario": {
         "description": "Mitigation scenario",
         "options": [
-            "no measures",
-            "light lockdown",
-            "heavy lockdown",
-            "weakly effective vaccine",
-            "strongly effective vaccine"
+            "no measures: gamma and beta unchanged",
+            "light lockdown: 20% reduction of beta",
+            "heavy lockdown: 70% reduction of beta",
+            "weakly effective vaccine: 20% reduction of beta and 50 % increase of gamma",
+            "strongly effective vaccine: 60% reduction of beta and 90 % increase of gamma"
         ],
         "value": "strongly effective vaccine"
     }
